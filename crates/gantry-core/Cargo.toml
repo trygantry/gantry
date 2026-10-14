@@ -1,0 +1,32 @@
+[package]
+name = "gantry-core"
+version.workspace = true
+description = "Local-first mobile release governance core: policy, candidate inspection, durable evidence, and deterministic release decisions."
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme = "../../README.md"
+keywords = ["mobile", "release", "policy", "governance", "supply-chain"]
+categories = ["development-tools"]
+
+[lints]
+workspace = true
+
+[lib]
+name = "gantry_core"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+yaml_serde = { workspace = true }
+jsonschema = { workspace = true }
+chrono = { workspace = true }
+roxmltree = { workspace = true }
+sha2 = { workspace = true }
+hex = { workspace = true }
+plist = { workspace = true }
+zip = { workspace = true }

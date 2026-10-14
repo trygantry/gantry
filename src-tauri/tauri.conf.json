@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Gantry",
+  "mainBinaryName": "gantry-desktop",
+  "version": "0.5.2",
+  "identifier": "app.trygantry.gantry",
+  "build": {
+    "frontendDist": "../src"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Gantry — Launch Control",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 960,
+        "minHeight": 640
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: https://asset.localhost; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "createUpdaterArtifacts": true,
+    "macOS": {
+      "minimumSystemVersion": "14.0"
+    },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDY0RTYzRTUyOTg2MjQ4MDYKUldRR1NHS1lVajdtWkZDblJDM3hiOUdhcmpGUFdwV1E3NTd2NllvWUZHbzM3QU5VWU5oeE5Eai8K",
+      "endpoints": [
+        "https://github.com/trygantry/gantry/releases/latest/download/latest.json"
+      ]
+    }
+  }
+}

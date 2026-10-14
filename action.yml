@@ -1,0 +1,365 @@
+name: "Gantry Launch Gate"
+description: "Validate launch readiness, govern an exact mobile candidate, publish its verified packet, and gate the build."
+author: "The Gantry Authors"
+branding:
+  icon: "check-circle"
+  color: "blue"
+
+inputs:
+  cli-version:
+    description: "Gantry CLI release to install. Defaults to the version bundled with this Action."
+    required: false
+    default: ""
+  workspace:
+    description: "Directory containing the .gantry/ vault to validate."
+    required: false
+    default: "."
+  token:
+    description: "GitHub token for posting PR comments."
+    required: false
+    default: "${{ github.token }}"
+  fail-on-no-go:
+    description: "Fail the build when launch is blocked (exit 1). Set to 'false' for reporting only."
+    required: false
+    default: "true"
+  comment:
+    description: "Post or update a sticky PR comment with the audit report."
+    required: false
+    default: "true"
+  environment:
+    description: "The specific environment profile (e.g. production, staging) to evaluate gates for."
+    required: false
+    default: ""
+  policy:
+    description: "URL or path to a shared scorecard policy JSON to overlay on top of the local .gantry/scorecard.json."
+    required: false
+    default: ""
+  mobile-audit:
+    description: "Run the mobile source/artifact release audit in addition to the general vault audit."
+    required: false
+    default: "false"
+  mobile-artifact:
+    description: "Optional path, relative to workspace, to the exact IPA, AAB, or APK candidate."
+    required: false
+    default: ""
+  release-version:
+    description: "Optional durable release version or label. Enables persistent candidate, audit, and packet records."
+    required: false
+    default: ""
+  release-name:
+    description: "Optional human-readable name used when the durable release is first created."
+    required: false
+    default: ""
+  release-owner:
+    description: "Optional accountable release owner used when the durable release is first created."
+    required: false
+    default: ""
+  release-actor:
+    description: "Identity written to candidate and audit events. Defaults to github-actions:<github.actor>."
+    required: false
+    default: ""
+  packet-artifact-name:
+    description: "GitHub artifact name for the verified JSON, Markdown, and HTML packet."
+    required: false
+    default: "gantry-release-packet"
+
+outputs:
+  duration-ms:
+    description: "Total composite Action duration in milliseconds."
+    value: ${{ steps.performance.outputs.duration-ms }}
+  performance-budget-met:
+    description: "Whether total execution stayed within the ten-minute onboarding budget."
+    value: ${{ steps.performance.outputs.performance-budget-met }}
+  release-id:
+    description: "Durable REL identifier when release-version is set."
+    value: ${{ steps.gantry.outputs.release-id }}
+  candidate-id:
+    description: "Active immutable CAN identifier when release-version is set."
+    value: ${{ steps.gantry.outputs.candidate-id }}
+  audit-id:
+    description: "Active AUD identifier when release-version is set."
+    value: ${{ steps.gantry.outputs.audit-id }}
+  decision:
+    description: "Deterministic mobile decision: go, at_risk, or no_go."
+    value: ${{ steps.gantry.outputs.decision }}
+  report-fingerprint:
+    description: "Canonical report fingerprint bound to the active audit."
+    value: ${{ steps.gantry.outputs.report-fingerprint }}
+  cache-hit:
+    description: "Whether the deterministic derived audit cache was reused."
+    value: ${{ steps.gantry.outputs.cache-hit }}
+  cache-key:
+    description: "Content identity for the derived audit cache when caching was eligible."
+    value: ${{ steps.gantry.outputs.cache-key }}
+  packet-id:
+    description: "Content-addressed PKT identifier."
+    value: ${{ steps.gantry.outputs.packet-id }}
+  packet-json-path:
+    description: "Workspace-relative path to the verified JSON packet."
+    value: ${{ steps.gantry.outputs.packet-json-path }}
+  packet-markdown-path:
+    description: "Workspace-relative path to the verified Markdown packet."
+    value: ${{ steps.gantry.outputs.packet-markdown-path }}
+  packet-html-path:
+    description: "Workspace-relative path to the verified HTML packet."
+    value: ${{ steps.gantry.outputs.packet-html-path }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Start Gantry performance measurement
+      id: performance-start
+      shell: bash
+      run: echo "started-ms=$(node -e 'process.stdout.write(String(Date.now()))')" >> "$GITHUB_OUTPUT"
+
+    - name: Install verified Gantry CLI binary
+      id: install
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        INPUT_CLI_VERSION: ${{ inputs.cli-version }}
+      run: |
+        set -euo pipefail
+        action_version="$(node -e 'const fs = require("fs"); const path = require("path"); process.stdout.write(JSON.parse(fs.readFileSync(path.join(process.env.ACTION_PATH, "package.json"), "utf8")).version)')"
+        version="${INPUT_CLI_VERSION:-$action_version}"
+        install_dir="${RUNNER_TEMP}/gantry-bin"
+        GANTRY_VERSION="$version" GANTRY_INSTALL_DIR="$install_dir" "${ACTION_PATH}/install.sh"
+        echo "bin=${install_dir}/gantry" >> "$GITHUB_OUTPUT"
+
+    - name: Resolve deterministic mobile cache identity
+      id: mobile-cache
+      if: ${{ inputs.release-version != '' && inputs.mobile-artifact != '' }}
+      shell: bash
+      working-directory: ${{ inputs.workspace }}
+      run: |
+        set -euo pipefail
+        BIN="${{ steps.install.outputs.bin }}"
+        descriptor="$("$BIN" mobile cache-key --artifact "${{ inputs.mobile-artifact }}" --json)"
+        cache_key="$(node -e 'const value=JSON.parse(process.argv[1]); process.stdout.write(value.cache_key || "")' "$descriptor")"
+        echo "cache-key=$cache_key" >> "$GITHUB_OUTPUT"
+
+    - name: Restore deterministic mobile audit cache
+      id: mobile-cache-restore
+      if: ${{ steps.mobile-cache.outputs.cache-key != '' }}
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: ${{ inputs.workspace }}/.gantry/cache/mobile
+        key: gantry-mobile-audit-v1-${{ runner.os }}-${{ steps.mobile-cache.outputs.cache-key }}
+
+    - name: Run Gantry audit and validation
+      id: gantry
+      shell: bash
+      working-directory: ${{ inputs.workspace }}
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        INPUT_ENVIRONMENT: ${{ inputs.environment }}
+        INPUT_COMMENT: ${{ inputs.comment }}
+        INPUT_FAIL_ON_NO_GO: ${{ inputs.fail-on-no-go }}
+        INPUT_POLICY: ${{ inputs.policy }}
+        INPUT_MOBILE_AUDIT: ${{ inputs.mobile-audit }}
+        INPUT_MOBILE_ARTIFACT: ${{ inputs.mobile-artifact }}
+        INPUT_WORKSPACE: ${{ inputs.workspace }}
+        INPUT_RELEASE_VERSION: ${{ inputs.release-version }}
+        INPUT_RELEASE_NAME: ${{ inputs.release-name }}
+        INPUT_RELEASE_OWNER: ${{ inputs.release-owner }}
+        INPUT_RELEASE_ACTOR: ${{ inputs.release-actor }}
+      run: |
+        set -euo pipefail
+
+        BIN="${{ steps.install.outputs.bin }}"
+        if [[ ! -x "$BIN" ]]; then
+          echo "::error::Gantry CLI binary not found at $BIN"
+          exit 2
+        fi
+
+        env_args=()
+        if [[ -n "${INPUT_ENVIRONMENT}" ]]; then
+          if [[ ! "${INPUT_ENVIRONMENT}" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "::error::Invalid environment '${INPUT_ENVIRONMENT}'. Use only letters, numbers, dot, underscore, or dash."
+            exit 2
+          fi
+          env_args=(--env "${INPUT_ENVIRONMENT}")
+        fi
+
+        report_file="$(mktemp -t gantry-pr-comment.XXXXXX.md)"
+        mobile_report_file="$(mktemp -t gantry-mobile-pr-comment.XXXXXX.md)"
+        release_file="$(mktemp -t gantry-release.XXXXXX.json)"
+        candidate_file="$(mktemp -t gantry-candidate.XXXXXX.json)"
+        audit_file="$(mktemp -t gantry-release-audit.XXXXXX.json)"
+        packet_file="$(mktemp -t gantry-release-packet.XXXXXX.json)"
+        mobile_status=0
+        trap 'rm -f "$report_file" "$mobile_report_file" "$release_file" "$candidate_file" "$audit_file" "$packet_file"' EXIT
+
+        # 1. Generate markdown audit report + PR change-impact delta
+        "$BIN" audit --dry-run ${env_args[@]+"${env_args[@]}"} --format markdown --output "$report_file"
+
+        # Append change-impact delta (files touched → blockers/QA affected)
+        if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+          printf '\n---\n\n' >> "$report_file"
+          "$BIN" impact --markdown >> "$report_file" 2>/dev/null || true
+        fi
+
+        if [[ -n "${INPUT_RELEASE_VERSION}" ]]; then
+          if [[ -z "${INPUT_MOBILE_ARTIFACT}" ]]; then
+            echo "::error::mobile-artifact is required when release-version is set"
+            exit 2
+          fi
+          if [[ ! "${INPUT_RELEASE_VERSION}" =~ ^[A-Za-z0-9._+-]+$ ]]; then
+            echo "::error::Invalid release-version '${INPUT_RELEASE_VERSION}'. Use only letters, numbers, dot, underscore, plus, or dash."
+            exit 2
+          fi
+
+          release_args=(release ensure "${INPUT_RELEASE_VERSION}" --json)
+          if [[ -n "${INPUT_RELEASE_NAME}" ]]; then release_args+=(--name "${INPUT_RELEASE_NAME}"); fi
+          if [[ -n "${INPUT_RELEASE_OWNER}" ]]; then release_args+=(--owner "${INPUT_RELEASE_OWNER}"); fi
+          release_actor="${INPUT_RELEASE_ACTOR:-github-actions:${GITHUB_ACTOR:-unknown}}"
+          release_args+=(--actor "$release_actor")
+          "$BIN" "${release_args[@]}" > "$release_file"
+
+          "$BIN" release candidate ensure "${INPUT_RELEASE_VERSION}" \
+            --artifact "${INPUT_MOBILE_ARTIFACT}" --actor "$release_actor" --json > "$candidate_file"
+
+          # A retry reuses the active audit only when candidate SHA, Git commit, policy
+          # digest, report fingerprint, and tool behavior are unchanged.
+          set +e
+          "$BIN" release audit "${INPUT_RELEASE_VERSION}" --reuse-unchanged --ci \
+            --actor "$release_actor" --json > "$audit_file"
+          mobile_status=$?
+          set -e
+          if (( mobile_status > 1 )); then
+            echo "::error::Persistent mobile audit could not complete"
+            exit "$mobile_status"
+          fi
+
+          "$BIN" release packet "${INPUT_RELEASE_VERSION}" --json > "$packet_file"
+          packet_markdown_rel="$(node -e 'const p=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")); process.stdout.write(p.markdown_path)' "$packet_file")"
+          printf '\n---\n\n' >> "$report_file"
+          cat ".gantry/${packet_markdown_rel}" >> "$report_file"
+
+          node - "$release_file" "$candidate_file" "$audit_file" "$packet_file" "$GITHUB_OUTPUT" "$INPUT_WORKSPACE" <<'NODE'
+        const fs = require("fs");
+        const [releasePath, candidatePath, auditPath, packetPath, outputPath, workspace] = process.argv.slice(2);
+        const release = JSON.parse(fs.readFileSync(releasePath, "utf8"));
+        const candidate = JSON.parse(fs.readFileSync(candidatePath, "utf8"));
+        const audit = JSON.parse(fs.readFileSync(auditPath, "utf8"));
+        const packet = JSON.parse(fs.readFileSync(packetPath, "utf8"));
+        const prefix = workspace === "." ? "" : `${workspace.replace(/\/$/, "")}/`;
+        const values = {
+          "release-id": release.id,
+          "candidate-id": candidate.id,
+          "audit-id": audit.audit.id,
+          "decision": audit.audit.decision,
+          "report-fingerprint": audit.audit.report_fingerprint,
+          "cache-hit": String(audit.cache_hit),
+          "cache-key": audit.cache_key || "",
+          "packet-id": packet.packet.packet_id,
+          "packet-json-path": `${prefix}.gantry/${packet.json_path}`,
+          "packet-markdown-path": `${prefix}.gantry/${packet.markdown_path}`,
+          "packet-html-path": `${prefix}.gantry/${packet.html_path}`,
+        };
+        fs.appendFileSync(outputPath, Object.entries(values).map(([key, value]) => `${key}=${value}`).join("\n") + "\n");
+        NODE
+        elif [[ "${INPUT_MOBILE_AUDIT}" == "true" ]]; then
+          mobile_args=(mobile audit --ci --format markdown --output "$mobile_report_file")
+          if [[ -n "${INPUT_MOBILE_ARTIFACT}" ]]; then
+            mobile_args+=(--artifact "${INPUT_MOBILE_ARTIFACT}")
+          fi
+          # Capture one canonical audit for both reporting and enforcement.
+          set +e
+          "$BIN" "${mobile_args[@]}"
+          mobile_status=$?
+          set -e
+          if (( mobile_status > 1 )); then
+            echo "::error::Mobile audit could not complete"
+            exit "$mobile_status"
+          fi
+          printf '\n---\n\n' >> "$report_file"
+          cat "$mobile_report_file" >> "$report_file"
+        fi
+
+        printf '\n<!-- gantry-bot-pr-comment-signature -->\n' >> "$report_file"
+
+        # 2. Post/update sticky PR comment (PR context only)
+        if [[ "${INPUT_COMMENT}" == "true" && "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "::error::GitHub CLI (gh) is required when comment=true."
+            exit 2
+          fi
+
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+        COMMENT_ID="$(gh pr view "$PR_NUMBER" --json comments \
+          --jq '.comments[] | select(.body | contains("<!-- gantry-bot-pr-comment-signature -->")) | .id' \
+          | head -n 1)"
+
+        if [[ -n "$COMMENT_ID" ]]; then
+          gh api graphql \
+            -f query='mutation($id: ID!, $body: String!) { updateIssueComment(input: {id: $id, body: $body}) { issueComment { id } } }' \
+            -f id="$COMMENT_ID" \
+            -F body=@"$report_file" >/dev/null
+        else
+          gh pr comment "$PR_NUMBER" --body-file "$report_file"
+        fi
+        fi
+
+        # 3. Gate the build (with optional shared policy overlay)
+        policy_args=()
+        if [[ -n "${INPUT_POLICY}" ]]; then
+          policy_args=(--policy "${INPUT_POLICY}")
+        fi
+
+        if [[ "${INPUT_FAIL_ON_NO_GO}" == "true" ]]; then
+          "$BIN" validate --ci ${env_args[@]+"${env_args[@]}"} ${policy_args[@]+"${policy_args[@]}"}
+          if (( mobile_status != 0 )); then
+            exit "$mobile_status"
+          fi
+        else
+          "$BIN" validate --ci ${env_args[@]+"${env_args[@]}"} ${policy_args[@]+"${policy_args[@]}"} || true
+        fi
+
+    - name: Upload verified release packet
+      if: ${{ always() && inputs.release-version != '' && steps.gantry.outputs.packet-id != '' }}
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: ${{ inputs.packet-artifact-name }}
+        if-no-files-found: error
+        path: |
+          ${{ steps.gantry.outputs.packet-json-path }}
+          ${{ steps.gantry.outputs.packet-markdown-path }}
+          ${{ steps.gantry.outputs.packet-html-path }}
+
+    - name: Save deterministic mobile audit cache
+      if: ${{ always() && steps.mobile-cache.outputs.cache-key != '' && steps.mobile-cache-restore.outputs.cache-hit != 'true' }}
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: ${{ inputs.workspace }}/.gantry/cache/mobile
+        key: gantry-mobile-audit-v1-${{ runner.os }}-${{ steps.mobile-cache.outputs.cache-key }}
+
+    - name: Publish Gantry performance evidence
+      id: performance
+      if: ${{ always() }}
+      shell: bash
+      env:
+        STARTED_MS: ${{ steps.performance-start.outputs.started-ms }}
+        MOBILE_CACHE_HIT: ${{ steps.mobile-cache-restore.outputs.cache-hit }}
+      run: |
+        set -euo pipefail
+        ended_ms="$(node -e 'process.stdout.write(String(Date.now()))')"
+        duration_ms="$((ended_ms - STARTED_MS))"
+        if (( duration_ms <= 600000 )); then
+          budget_met=true
+        else
+          budget_met=false
+        fi
+        cache_state="${MOBILE_CACHE_HIT:-ineligible}"
+        if [[ -z "$cache_state" ]]; then cache_state="miss"; fi
+        echo "duration-ms=$duration_ms" >> "$GITHUB_OUTPUT"
+        echo "performance-budget-met=$budget_met" >> "$GITHUB_OUTPUT"
+        {
+          echo "### Gantry Action performance"
+          echo
+          echo "| Measure | Result |"
+          echo "| --- | --- |"
+          echo "| Total duration | ${duration_ms} ms |"
+          echo "| Mobile audit cache | ${cache_state} |"
+          echo "| Ten-minute onboarding budget | ${budget_met} |"
+        } >> "$GITHUB_STEP_SUMMARY"

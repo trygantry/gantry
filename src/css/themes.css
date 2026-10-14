@@ -1,0 +1,34 @@
+/* Cyberpunk Neon */
+body.theme-cyberpunk {
+  --bg-app: #0c0516;
+  --bg-sidebar: #120722;
+  --bg-card: #1c0b33;
+  --border-focus: #ec4899;
+  --text-primary: #fdf4ff;
+  --color-primary: #d946ef;
+  --color-primary-glow: transparent;
+  --color-go: #06b6d4;
+  --color-go-glow: transparent;
+}
+
+/* Nordic Frost */
+body.theme-nord {
+  --bg-app: #0b0f19;
+  --bg-sidebar: #0f172a;
+  --bg-card: #1e293b;
+  --border-focus: #38bdf8;
+  --text-primary: #f0fdfa;
+  --color-primary: #38bdf8;
+  --color-primary-glow: transparent;
+}
+
+/* Monokai Retro */
+body.theme-monokai {
+  --bg-app: #121210;
+  --bg-sidebar: #1b1b18;
+  --bg-card: #272723;
+  --border-focus: #f43f5e;
+  --color-primary: #e6db74;
+  --color-primary-glow: transparent;
+  --color-go: #a6e22e;
+}

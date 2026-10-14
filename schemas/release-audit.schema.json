@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/release-audit.schema.json",
+  "title": "Gantry Persistent Release Audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "release_id",
+    "candidate_id",
+    "platform",
+    "candidate_sha256",
+    "report_fingerprint",
+    "policy_digest",
+    "decision",
+    "counts",
+    "git_commit",
+    "generated_at",
+    "recorded_at",
+    "report_path"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "id": { "type": "string", "pattern": "^AUD-[A-F0-9]{10}$" },
+    "release_id": { "type": "string", "pattern": "^REL-[A-F0-9]{10}$" },
+    "candidate_id": { "type": "string", "pattern": "^CAN-[A-F0-9]{10}$" },
+    "platform": { "enum": ["ios", "android"] },
+    "candidate_sha256": { "$ref": "#/$defs/sha256" },
+    "report_fingerprint": { "$ref": "#/$defs/sha256" },
+    "policy_digest": { "$ref": "#/$defs/sha256" },
+    "decision": { "enum": ["go", "at_risk", "no_go"] },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["passed", "blockers", "warnings", "manual", "unavailable"],
+      "properties": {
+        "passed": { "type": "integer", "minimum": 0 },
+        "blockers": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 },
+        "manual": { "type": "integer", "minimum": 0 },
+        "unavailable": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "git_commit": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "report_path": {
+      "type": "string",
+      "pattern": "^releases/REL-[A-F0-9]{10}/reports/AUD-[A-F0-9]{10}\\.json$"
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

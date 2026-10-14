@@ -1,0 +1,1705 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="index.css?v=0.5.2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gantry — Release Governance</title>
+    <script src="/marked.min.js?v=0.5.2"></script>
+    <script src="/purify.min.js?v=0.5.2"></script>
+    <script type="module" src="/main.js?v=0.5.2" defer></script>
+  </head>
+
+  <body data-product-area="release">
+    <div class="app-container">
+
+      <!-- LEFT SIDEBAR -->
+      <aside class="sidebar">
+        <div>
+          <div class="brand-section">
+            <img class="brand-logo" src="logo.png" alt="Gantry Logo" />
+            <div class="brand-meta">
+              <span class="brand-name" style="display:flex; align-items:center; gap:6px;">
+                Gantry
+                <span class="watch-dot-indicator" id="watch-dot-indicator" style="display:none;" title="Live Watch Mode Active"></span>
+              </span>
+              <span class="brand-subtitle">RELEASE GOVERNANCE</span>
+            </div>
+          </div>
+
+          <!-- Countdown Widget -->
+          <div class="countdown-panel">
+            <div class="countdown-label">Release Countdown</div>
+            <div class="countdown-timer" id="countdown-display">T-00d 00h 00m 00s</div>
+            <div class="countdown-target" id="countdown-target-date">Target: —</div>
+          </div>
+
+          <!-- Sidebar Navigation Items -->
+          <ul class="nav-list nav-list-primary">
+            <li>
+              <button class="nav-item active" data-view="mobile" data-mobile-workspace="releases" data-mobile-context="releases" aria-label="Open Release Portfolio">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h10" /></svg>
+                <span>Release Portfolio</span>
+                <span class="nav-badge pending" id="sidebar-mobile-badge" style="display:none;">!</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="mobile" data-mobile-workspace="audit" data-mobile-context="audit" aria-label="Open Candidate Audit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5-3a9 9 0 11-16 0 9 9 0 0116 0z" /></svg>
+                <span>Audit Candidate</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="mobile" data-mobile-workspace="policy" data-mobile-context="policy" aria-label="Open Release Policies">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l7 4v5c0 4.4-2.9 7.7-7 9-4.1-1.3-7-4.6-7-9V7l7-4z" /></svg>
+                <span>Policies</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="ci-setup" aria-label="Open CI and Integrations">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 12h8M8 17h5M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" /></svg>
+                <span>CI &amp; Integrations</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="settings" aria-label="Open Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15.5A3.5 3.5 0 1012 8a3.5 3.5 0 000 7.5zM19.4 15a1.7 1.7 0 00.34 1.88l.06.06-2.12 2.12-.06-.06a1.7 1.7 0 00-1.88-.34 1.7 1.7 0 00-1.04 1.56V20h-3v-.08a1.7 1.7 0 00-1.04-1.56 1.7 1.7 0 00-1.88.34l-.06.06-2.12-2.12.06-.06A1.7 1.7 0 006.6 15a1.7 1.7 0 00-1.56-1.04H5v-3h.08A1.7 1.7 0 006.64 9.9a1.7 1.7 0 00-.34-1.88l-.06-.06 2.12-2.12.06.06a1.7 1.7 0 001.88.34A1.7 1.7 0 0011.34 4.7V4h3v.08a1.7 1.7 0 001.04 1.56 1.7 1.7 0 001.88-.34l.06-.06 2.12 2.12-.06.06A1.7 1.7 0 0019.72 9a1.7 1.7 0 001.56 1.04H21v3h-.08A1.7 1.7 0 0019.4 15z" /></svg>
+                <span>Settings</span>
+              </button>
+            </li>
+          </ul>
+
+          <details class="legacy-nav">
+            <summary>Legacy launch readiness</summary>
+            <ul class="nav-list legacy-nav-list">
+            <li>
+              <button class="nav-item" data-view="dashboard" aria-label="Open Launch Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z" />
+                </svg>
+                <span>Launch Dashboard</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="ci-setup" aria-label="Open CI/CD Integration">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+                <span>CI/CD Integration</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="health" aria-label="Open Docs Health">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span>Docs Health</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="blockers" aria-label="Open Critical Issues">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span>Critical Issues</span>
+                <span class="nav-badge alert" id="sidebar-blocker-badge" style="display:none;">0</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="qa" aria-label="Open QA Readiness">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                <span>QA Readiness</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="gonogo" aria-label="Open Go/No-Go Room">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Go/No-Go Room</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="mobile" aria-label="Open Mobile Release">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 2h8a2 2 0 012 2v16a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 012-2zm2 3h4m-3 14h2" />
+                </svg>
+                <span>Mobile Release</span>
+                <span class="nav-badge pending" id="sidebar-mobile-badge-legacy" style="display:none;">!</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="audit" aria-label="Open Launch Audit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+                <span>Launch Audit</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="timeline" aria-label="Open What's New Timeline">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>What's New</span>
+                <span class="nav-badge info" id="sidebar-commit-badge" style="display:none;">0</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="editor" aria-label="Open Vault Editor">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <span>Vault Editor</span>
+                <span class="nav-badge pending" id="sidebar-editor-dirty-badge" style="display:none;">●</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-item" data-view="settings" aria-label="Open Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Settings</span>
+              </button>
+            </li>
+            </ul>
+          </details>
+        </div>
+
+        <!-- Global Search trigger instruction -->
+        <div>
+          <button class="search-trigger-container" id="search-trigger-btn" aria-label="Quick Search (Command K)">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span class="search-placeholder">Quick Search</span>
+            <span class="search-shortcut">⌘K</span>
+          </button>
+
+          <div class="sidebar-footer-container">
+            <div class="user-profile-section" id="sidebar-profile-card">
+              <div class="avatar" id="profile-avatar">?</div>
+              <div class="user-info">
+                <span class="user-name" id="profile-name">Git Config User</span>
+                <span class="user-role">Project Member</span>
+              </div>
+              <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <div class="sidebar-footer">
+              <span class="app-version" id="app-version-display">Gantry v0.5.2</span>
+              <div class="connection-status" id="git-status-badge" title="">
+                <span class="status-dot" id="git-status-dot"></span>
+                <span class="status-text" id="git-status-text">Checking…</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN WORKSPACE -->
+      <main class="main-content">
+        <!-- Top Navigation Status Bar -->
+        <header class="top-bar">
+          <div class="header-left">
+            <h2 class="page-title" id="page-title-display">Release Portfolio</h2>
+            <div class="release-badge">
+              <span class="release-ver" id="header-release-version">Release: v0.5.2</span>
+              <select id="header-release-env-select" class="release-env production">
+                <option value="production">production</option>
+              </select>
+            </div>
+          </div>
+          <div class="header-right">
+            <div class="launch-status-indicator" id="launch-status-indicator" title="View Go/No-Go Room" style="cursor:pointer;">
+              <span class="status-text" id="readiness-status-text">LAUNCH GATE PENDING</span>
+              <span style="opacity:0.6; font-size:10px; margin-left:4px;">→</span>
+            </div>
+            <div class="last-updated-container">
+              <span class="last-updated-label" id="last-updated-time">Last updated --:--:--</span>
+              <button class="btn-icon" id="header-refresh-btn" aria-label="Refresh launch data">
+                <svg class="refresh-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3 3L22 4" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Demo Mode Banner (visible only when exploring sample vault) -->
+        <div id="demo-mode-banner" style="display:none; align-items:center; justify-content:center; gap:12px;
+             padding:8px 24px; background:rgba(99,102,241,0.12); border-bottom:1px solid rgba(99,102,241,0.2);
+             font-size:12px; color:var(--text-secondary); flex-shrink:0;">
+          <span>📦 You're exploring the <strong style="color:var(--text-primary);">sample mobile release vault</strong></span>
+          <button class="btn" id="btn-demo-exit"
+                  style="font-size:11px; padding:4px 14px; border-radius:4px;
+                         border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.06);
+                         color:var(--text-primary); cursor:pointer;">
+            Back to Project Setup
+          </button>
+          <button class="btn" id="btn-demo-change-folder"
+                  style="font-size:11px; padding:4px 14px; border-radius:4px;
+                         border:1px solid rgba(99,102,241,0.3); background:rgba(99,102,241,0.15);
+                         color:#a5b4fc; cursor:pointer;">
+            Change Folder...
+          </button>
+        </div>
+
+        <!-- View Panels Body -->
+        <section class="content-body">
+
+          <!-- No-vault overlay: covers entire main panel when no .gantry/ vault is found -->
+          <div id="no-vault-overlay" style="display:none; position:absolute; inset:0; z-index:50;
+               background:var(--bg-app); flex-direction:column; align-items:center;
+               justify-content:center; gap:20px; text-align:center; padding: 40px; overflow-y: auto;">
+
+            <!-- Panel A: No workspace folder open -->
+            <div id="no-folder-panel" style="display:none; flex-direction:column; align-items:center; gap:20px;">
+              <div style="font-size:48px; opacity:0.4;">📁</div>
+              <div>
+                <h2 style="margin:0 0 8px; font-family:var(--font-display);">No project open</h2>
+                <p style="color:var(--text-secondary); font-size:14px; margin:0 0 24px;">
+                  Open a project folder that contains a <code>.gantry/</code> vault,<br>
+                  or initialize a new one.
+                </p>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+                  <button class="btn btn-primary" id="btn-open-project-overlay"
+                          style="font-size:14px; padding:10px 24px;">
+                    Open a project folder...
+                  </button>
+                  <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+                    <button class="btn" id="btn-load-demo"
+                            style="font-size:12px; padding:8px 18px; opacity:0.7;">
+                      Explore a mobile release sample
+                    </button>
+                    <span id="demo-vault-label" style="font-size:10px; color:var(--text-muted);"></span>
+                  </div>
+                </div>
+              </div>
+              <p style="color:var(--text-muted); font-size:11px;">
+                You can also launch Gantry from your project directory:<br>
+                <code>cd ~/your-project &amp;&amp; open /Applications/Gantry.app</code>
+              </p>
+            </div>
+
+            <!-- Panel B: Folder open but Gantry vault is missing (Setup Onboarding Wizard) -->
+            <div id="setup-wizard-panel" style="display:none; flex-direction:column; align-items:center; max-width:600px; width:100%; gap:20px; background:rgba(30,41,59,0.4); border:1px solid var(--border-glass); border-radius:12px; padding:32px; backdrop-filter:blur(20px);">
+              <div style="font-size:40px;">🚀</div>
+              <div style="text-align:center;">
+                <h2 style="margin:0 0 8px; font-family:var(--font-display); color:var(--text-primary);">Initialize Gantry Release Governance</h2>
+                <p style="color:var(--text-secondary); font-size:13px; margin:0 0 24px;">
+                  Set up repository-owned release policy and evidence in seconds. We've detected your project stack.
+                </p>
+              </div>
+
+              <form id="onboarding-setup-form" style="width:100%; display:flex; flex-direction:column; gap:16px; text-align:left;">
+
+                <div class="wizard-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                  <div class="wizard-field">
+                    <label style="display:block; font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Project Stack / Template</label>
+                    <select id="wizard-template-select" class="form-select" style="width:100%; background:rgba(15,23,42,0.6); border:1px solid var(--border-glass); color:var(--text-primary); border-radius:6px; padding:8px 12px; font-size:13px;">
+                      <option value="mobile-app">Mobile Application (iOS/Android)</option>
+                      <option value="saas-app">Web SaaS Application (React/Next.js)</option>
+                      <option value="ai-app">AI Native Application (LLMs/Agents)</option>
+                      <option value="backend-api">Backend API Service (Go/Rust/Python)</option>
+                      <option value="desktop-app">Desktop App Client (Tauri/Electron)</option>
+                      <option value="chrome-extension">Chrome Browser Extension</option>
+                    </select>
+                  </div>
+
+                  <div class="wizard-field">
+                    <label style="display:block; font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Release Version</label>
+                    <input type="text" id="wizard-version-input" class="form-input" value="1.0.0" style="width:100%; background:rgba(15,23,42,0.6); border:1px solid var(--border-glass); color:var(--text-primary); border-radius:6px; padding:8px 12px; font-size:13px;" required>
+                  </div>
+                </div>
+
+                <div class="wizard-row" style="display:grid; grid-template-columns:1fr; gap:16px;">
+                  <div class="wizard-field">
+                    <label style="display:block; font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Target Launch Date & Time</label>
+                    <div style="display:flex; gap:8px; width:100%;">
+                      <input type="date" id="wizard-date-input" class="form-input" style="flex:2; background:rgba(15,23,42,0.6); border:1px solid var(--border-glass); color:var(--text-primary); border-radius:6px; padding:8px 12px; font-size:13px;" required>
+                      <input type="time" id="wizard-time-input" class="form-input" style="flex:1; background:rgba(15,23,42,0.6); border:1px solid var(--border-glass); color:var(--text-primary); border-radius:6px; padding:8px 12px; font-size:13px;" required>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="wizard-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                  <div class="wizard-field">
+                    <label style="display:block; font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Lead Owner Handle</label>
+                    <input type="text" id="wizard-lead-owner-input" class="form-input" value="@owner" style="width:100%; background:rgba(15,23,42,0.6); border:1px solid var(--border-glass); color:var(--text-primary); border-radius:6px; padding:8px 12px; font-size:13px;" required>
+                  </div>
+
+                  <div class="wizard-field">
+                    <label style="display:block; font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; font-weight:600;">QA Lead Handle</label>
+                    <input type="text" id="wizard-qa-lead-input" class="form-input" value="@qa_owner" style="width:100%; background:rgba(15,23,42,0.6); border:1px solid var(--border-glass); color:var(--text-primary); border-radius:6px; padding:8px 12px; font-size:13px;" required>
+                  </div>
+                </div>
+
+                <div class="wizard-field">
+                  <label style="display:block; font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-weight:600;">Enable Launch Gates</label>
+                  <div id="wizard-gates-container" style="display:flex; flex-direction:column; gap:8px; background:rgba(15,23,42,0.4); padding:12px; border-radius:6px; border:1px solid var(--border-glass);">
+                    <!-- Dynamically populated gates checkboxes -->
+                  </div>
+                </div>
+
+                <div class="wizard-field" style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+                  <input type="checkbox" id="wizard-create-qa-checkbox" checked style="width:16px; height:16px; accent-color:var(--color-brand);">
+                  <label for="wizard-create-qa-checkbox" style="font-size:13px; color:var(--text-primary); cursor:pointer;">Create starter QA regression checklist (<code>qa/regression.md</code>)</label>
+                </div>
+
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:16px; gap:16px;">
+                  <button type="button" class="btn" id="btn-change-folder-wizard" style="font-size:13px; padding:8px 16px; background:transparent; border:1px solid var(--border-glass); color:var(--text-secondary);">
+                    Change Folder...
+                  </button>
+                  <button type="submit" class="btn btn-primary" style="font-size:13px; padding:8px 24px;">
+                    Initialize Control Room
+                  </button>
+                </div>
+
+                <div style="text-align:center; margin-top:8px; padding-top:12px; border-top:1px solid var(--border-glass);">
+                  <button type="button" id="btn-wizard-try-demo"
+                          style="background:none; border:none; font-size:12px; color:var(--text-muted);
+                                 cursor:pointer; padding:4px 8px; transition:color 0.2s;">
+                    or explore the mobile release sample first →
+                  </button>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+
+          <!-- VIEW: DASHBOARD -->
+          <div id="view-dashboard" class="view-panel">
+
+            <!-- CLI Terminal Header -->
+            <div class="terminal-header-card">
+              <div class="terminal-titlebar">
+                <div class="terminal-dots">
+                  <span class="dot red"></span>
+                  <span class="dot yellow"></span>
+                  <span class="dot green"></span>
+                </div>
+                <div class="terminal-title">gantry status</div>
+              </div>
+              <div class="terminal-body">
+                <div class="terminal-line brand-line">
+                  <img src="logo.png" class="terminal-logo" alt="Logo">
+                  <span class="terminal-brand-text">GANTRY</span>
+                  <span class="terminal-subtext">Artifact-bound Mobile Release Governance</span>
+                </div>
+                <div class="terminal-line command-line">
+                  <span class="terminal-prompt">$</span> gantry status
+                </div>
+                <div class="terminal-stats-grid">
+                  <div class="terminal-stat-item">
+                    <span class="stat-name">Environment:</span>
+                    <span class="stat-value production">production</span>
+                  </div>
+                  <div class="terminal-stat-item">
+                    <span class="stat-name">Checks:</span>
+                    <span class="stat-value info"><span id="terminal-checks-passed">0/0</span> passed</span>
+                  </div>
+                  <div class="terminal-stat-item">
+                    <span class="stat-name">Readiness:</span>
+                    <span class="stat-value" id="terminal-readiness-val">—</span>
+                  </div>
+                </div>
+                <div class="terminal-line status-line" id="terminal-status-line">
+                  Checking vault...
+                </div>
+              </div>
+            </div>
+
+            <!-- Release Progression Strip -->
+            <div class="progression-container" id="dashboard-progression-strip"></div>
+
+            <div class="dashboard-layout-grid">
+
+              <!-- Left Main Column (2/3 width) -->
+              <div class="dashboard-main-column">
+
+                <!-- Readiness Scorecard Card -->
+                <div class="card scorecard-card" style="margin-bottom: 16px;">
+                  <div class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 00-4-4H3m18 0h-2a4 4 0 00-4 4v2m-3-4h.01M9 16h.01M21 21a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v16z" />
+                    </svg>
+                    Readiness Scorecard
+                  </div>
+                  <div id="dashboard-scorecard-container"></div>
+                </div>
+
+                <!-- Readiness Trends Card -->
+                <div class="card trends-card" id="dashboard-trends-container" style="margin-bottom: 16px;">
+                  <!-- Rendered dynamically in JS -->
+                </div>
+
+                <!-- Tabbed Dashboard Card -->
+                <div class="card dashboard-tabbed-card">
+                  <div class="dashboard-tabs-header">
+                    <button class="dashboard-tab-btn active" data-dashboard-tab="checklist">Gates Checklist</button>
+                    <button class="dashboard-tab-btn" data-dashboard-tab="blockers">Active Blockers</button>
+                    <button class="dashboard-tab-btn" data-dashboard-tab="logs">Live Logs</button>
+                  </div>
+
+                  <!-- Tab Content: Gates Checklist -->
+                  <div class="dashboard-tab-content active" id="db-tab-checklist">
+                    <div class="card-header-row" style="margin-bottom: 12px; margin-top: 4px;">
+                      <div class="checklist-progress-container">
+                        <span class="progress-text" id="checklist-progress-text">0 of 0 gates complete</span>
+                        <div class="progress-bar-track mini">
+                          <div class="progress-bar-fill" id="checklist-progress-bar" style="width: 0%;"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="table-responsive">
+                      <table class="gates-table">
+                        <thead>
+                          <tr>
+                            <th>GATE</th>
+                            <th>STATUS</th>
+                            <th>OWNER</th>
+                            <th>DUE</th>
+                            <th>UPDATED</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody id="go-no-go-table-body">
+                          <!-- Generated dynamically from go_no_go.md -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Tab Content: Active Blockers -->
+                  <div class="dashboard-tab-content" id="db-tab-blockers">
+                    <div class="blocker-alert-banner" id="blocker-alert-banner" style="margin-bottom: 12px;">
+                      <span class="banner-icon">⚠️</span>
+                      <span class="banner-text" id="blocker-banner-text">1 open blocker(s) require attention before launch.</span>
+                    </div>
+                    <div class="dashboard-blockers-list" id="dashboard-blockers-list">
+                      <!-- Blocker items -->
+                    </div>
+                    <div class="blocker-counts-row" style="margin-top: 12px;">
+                      <div class="badge-count blue">Open <span id="count-open">0</span></div>
+                      <div class="badge-count yellow">At Risk <span id="count-at-risk">0</span></div>
+                      <div class="badge-count green">Resolved <span id="count-completed">0</span></div>
+                    </div>
+                  </div>
+
+                  <!-- Tab Content: Live Logs -->
+                  <div class="dashboard-tab-content" id="db-tab-logs">
+                    <div class="log-stream-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="stat-label">Live Log Stream</span>
+                        <select class="blocker-field-select" id="log-provider-select" style="margin-left:0; font-size:10px; padding:2px 6px;">
+                          <option value="sandbox">Sandbox</option>
+                          <option value="production">Production</option>
+                        </select>
+                      </div>
+                      <button class="btn" id="log-expand-btn" aria-label="Expand logs" style="font-size:10px; padding:2px 8px; border-radius:4px; gap:4px; height:20px; line-height:1; border:1px solid var(--border-glass);">
+                        <svg id="log-expand-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 10px; height: 10px; stroke-width: 2.5;">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l-5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                        </svg>
+                        <span id="log-expand-text">Expand</span>
+                      </button>
+                    </div>
+                    <div class="logs-stream" id="gantry-log-stream">
+                      <!-- Logs stream -->
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Right Sidebar Column (1/3 width) -->
+              <div class="dashboard-sidebar-column">
+
+                <!-- Next Actions (Priority at the top of the sidebar) -->
+                <div class="card next-actions-card">
+                  <div class="card-title" style="color:#a5b4fc;">
+                    🎯 Next Actions
+                  </div>
+                  <div class="next-actions-list" id="next-actions-list">
+                    <!-- Dynamically derived from index state -->
+                  </div>
+                  <div class="card-footer-action">
+                    <a class="btn-link" id="btn-goto-gonogo">Open Go/No-Go Room &rarr;</a>
+                  </div>
+                </div>
+
+                <!-- Active Waivers Card -->
+                <div class="card waivers-card" style="margin-bottom: 16px;">
+                  <div class="card-title" style="color: #a5b4fc;">
+                    🛡 Active Waivers
+                  </div>
+                  <div class="next-actions-list" id="dashboard-waivers-list">
+                    <!-- Rendered dynamically in JS -->
+                  </div>
+                </div>
+
+                <!-- Release Manifest Card -->
+                <div class="card manifest-card" style="margin-bottom: 16px;">
+                  <div class="card-title">
+                    📋 Release Manifest Summary
+                  </div>
+                  <div id="dashboard-manifest-summary">
+                    <!-- Rendered dynamically in JS -->
+                  </div>
+                </div>
+
+                <!-- Integration Metrics Panel (Redesigned Telemetry Grid, now clean without log stream) -->
+                <div class="card telemetry-card">
+                  <div class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    System Telemetry Health
+                  </div>
+
+                  <div class="telemetry-grid">
+                    <!-- Sentry -->
+                    <div class="stat-widget">
+                      <span class="stat-label" id="sentry-label">Sentry Crash-Free</span>
+                      <div class="stat-main" style="align-items: center; gap: 8px;">
+                        <span class="stat-val" id="sentry-stability">99.80%</span>
+                        <span class="status-pill completed" id="sentry-stability-badge">Fresh</span>
+                      </div>
+                      <div class="stat-change" id="sentry-target-label" style="font-size: 10.5px; color: var(--text-muted); margin-top: 4px;">Target: &ge;99.9%</div>
+                    </div>
+
+                    <!-- Active Blockers -->
+                    <div class="stat-widget">
+                      <span class="stat-label">Active Blockers</span>
+                      <div class="stat-main">
+                        <span class="stat-val alert" id="blocker-count">0</span>
+                        <span class="stat-change negative" id="blocker-change-label">↑ 0 vs yesterday</span>
+                      </div>
+                    </div>
+
+                    <!-- QA Completion -->
+                    <div class="stat-widget">
+                      <span class="stat-label">QA Completion</span>
+                      <div class="stat-main">
+                        <span class="stat-val" id="qa-progress-text">0 / 0</span>
+                        <span class="qa-progress-pct" id="qa-progress-pct">0%</span>
+                      </div>
+                      <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="qa-progress-bar" style="width: 0%;"></div>
+                      </div>
+                    </div>
+
+                    <!-- Deployment Readiness -->
+                    <div class="stat-widget">
+                      <span class="stat-label">Deployment Readiness</span>
+                      <div class="stat-main">
+                        <span class="stat-val" id="deployment-readiness-val">0%</span>
+                        <span class="qa-progress-pct" id="deployment-readiness-pct">—</span>
+                      </div>
+                      <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="deployment-readiness-bar" style="width: 0%;"></div>
+                      </div>
+                    </div>
+
+                    <!-- CI Pipeline Status -->
+                    <div class="stat-widget">
+                      <span class="stat-label">CI Pipeline Status</span>
+                      <div class="stat-main" id="ci-status-container">
+                        <span class="stat-val unknown" id="ci-status-val">Unknown</span>
+                        <span class="ci-status-badge" id="ci-status-provider">Checking...</span>
+                      </div>
+                      <div class="ci-file-indicator" id="ci-file-path" title="Scanning CI configurations">-</div>
+                    </div>
+
+                    <!-- Service Uptime -->
+                    <div class="stat-widget">
+                      <span class="stat-label">Service Uptime (7d)</span>
+                      <div class="stat-main">
+                        <span class="stat-val positive" id="service-uptime-val">99.96%</span>
+                      </div>
+                      <div class="sparkline-container">
+                        <svg class="sparkline" id="uptime-sparkline" viewBox="0 0 100 30" preserveAspectRatio="none">
+                          <defs>
+                            <linearGradient id="uptime-gradient" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/>
+                              <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                            </linearGradient>
+                          </defs>
+                          <path class="sparkline-fill" d="M 0 30 L 0 20 Q 15 15 30 18 T 60 8 T 90 22 L 100 12 L 100 30 Z" fill="url(#uptime-gradient)" stroke="none"></path>
+                          <path class="sparkline-line" d="M 0 20 Q 15 15 30 18 T 60 8 T 90 22 L 100 12" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Approvals -->
+                <div class="card approvals-card">
+                  <div class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Approvals
+                  </div>
+                  <div class="dashboard-approvals-list" id="dashboard-approvals-list">
+                    <!-- Dynamic list of approvals -->
+                  </div>
+                </div>
+
+                <!-- Activity Timeline -->
+                <div class="card activity-timeline-card">
+                  <div class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Activity Timeline
+                  </div>
+                  <div class="dashboard-activity-list" id="dashboard-activity-list">
+                    <!-- Dynamic recent activities -->
+                  </div>
+                  <div class="card-footer-action">
+                    <a class="btn-link" id="btn-goto-timeline">View full activity feed &rarr;</a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: CI/CD INTEGRATION -->
+          <div id="view-ci-setup" class="view-panel">
+            <div class="ci-setup-container">
+              <div class="ci-setup-header">
+                <div class="section-eyebrow">Candidate-bound enforcement</div>
+                <h2>CI &amp; integrations</h2>
+                <p>Run the same deterministic audit against the exact IPA, AAB, or APK that will ship. The workflow persists the release record and uploads its verified packet.</p>
+              </div>
+
+              <div class="ci-status-hero-card" id="ci-hero-status-card">
+                <div class="hero-status-main">
+                  <div class="status-indicator-ring">
+                    <span class="status-bullet" id="ci-hero-bullet"></span>
+                  </div>
+                  <div class="hero-status-info">
+                    <h3 id="ci-hero-title">Mobile Release Gate Not Detected</h3>
+                    <p id="ci-hero-desc">Add the canonical Action, then make its job a required check on the protected release branch.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ci-config-section">
+                <div class="config-tabs">
+                  <button class="config-tab-btn active" data-tab="tab-github">GitHub Actions</button>
+                  <button class="config-tab-btn" data-tab="tab-cli">Other CI</button>
+                </div>
+
+                <div class="config-content active" id="tab-github">
+                  <div class="code-block-header">
+                    <span>.github/workflows/gantry.yml</span>
+                    <button class="btn btn-copy" data-target="snippet-github">Copy Snippet</button>
+                  </div>
+                  <pre><code id="snippet-github">name: Gantry mobile release gate
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  mobile-release-gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Build the signed release candidate
+        run: ./scripts/build-release-candidate.sh
+
+      - name: Audit the exact candidate
+        uses: trygantry/gantry@v1
+        with:
+          mobile-artifact: build/app/outputs/bundle/release/app-release.aab
+          release-version: ${{ github.ref_name }}
+          release-name: Production candidate
+          release-owner: release@company.com
+          fail-on-no-go: true</code></pre>
+                </div>
+
+                <div class="config-content" id="tab-cli">
+                  <div class="code-block-header">
+                    <span>Portable CLI sequence</span>
+                    <button class="btn btn-copy" data-target="snippet-cli">Copy Snippet</button>
+                  </div>
+                  <pre><code id="snippet-cli">gantry release ensure "$RELEASE_VERSION" \
+  --name "Production candidate" \
+  --owner "release@company.com"
+gantry release candidate ensure "$RELEASE_VERSION" \
+  --artifact "$SIGNED_ARTIFACT"
+gantry release audit "$RELEASE_VERSION" --reuse-unchanged --ci
+gantry release packet "$RELEASE_VERSION"</code></pre>
+                </div>
+              </div>
+
+              <div class="ci-doc-reference card">
+                <h4>Make the gate authoritative</h4>
+                <div class="exit-codes-grid">
+                  <div class="exit-code-item">
+                    <span class="code-num go">1</span>
+                    <span class="code-label">Build once</span>
+                    <span class="code-description">Pass the exact signed store candidate to <code>mobile-artifact</code>; do not rebuild after the audit.</span>
+                  </div>
+                  <div class="exit-code-item">
+                    <span class="code-num risk">2</span>
+                    <span class="code-label">Require the check</span>
+                    <span class="code-description">Protect the release branch and require the <code>mobile-release-gate</code> job before merge or promotion.</span>
+                  </div>
+                  <div class="exit-code-item">
+                    <span class="code-num error">3</span>
+                    <span class="code-label">Retain the record</span>
+                    <span class="code-description">Commit policy changes and retain <code>.gantry/releases/</code>; download the uploaded verified packet for review.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: SETTINGS -->
+          <div id="view-settings" class="view-panel">
+            <div class="settings-container">
+              <div class="settings-section card">
+                <h3>Local Settings</h3>
+                <p class="settings-desc">
+                  The active project folder. Gantry reads <code>.gantry/</code> from this directory.
+                </p>
+                <div class="settings-field">
+                  <label class="settings-label">Project Folder</label>
+                  <div class="settings-input-group">
+                    <input type="text" id="workspace-path-display" readonly class="form-input workspace-path-field" placeholder="Demo vault (no project open)" />
+                    <button class="btn btn-change-project" id="btn-change-project">
+                      Change Project...
+                    </button>
+                    <button class="btn btn-demo-secondary" id="btn-settings-try-demo">
+                      Try Sample Vault
+                    </button>
+                  </div>
+                </div>
+                <div id="no-vault-hint" class="vault-hint text-pending" style="display:none;">
+                  ⚠ No <code>.gantry/</code> vault found in this folder.
+                  Run <code>gantry init --auto</code> in your project, or choose a different folder.
+                </div>
+              </div>
+
+              <div class="settings-section card">
+                <h3>Vault Health &amp; Recovery</h3>
+                <p class="settings-desc">Verify durable release history, recover complete interrupted writes, preview schema upgrades, or create a redacted diagnostic bundle.</p>
+                <div class="vault-operation-actions" role="group" aria-label="Vault health and recovery actions">
+                  <button class="btn btn-primary" id="btn-vault-check" type="button">Check vault</button>
+                  <button class="btn" id="btn-vault-repair" type="button">Repair transactions</button>
+                  <button class="btn" id="btn-vault-migration" type="button">Preview migration</button>
+                  <button class="btn" id="btn-vault-support" type="button">Create support bundle</button>
+                </div>
+                <div class="vault-operation-status" id="vault-operations-status" role="status" aria-live="polite">No vault check has run in this session.</div>
+                <p class="settings-privacy-note">Support bundles exclude source contents and names, artifact paths and hashes, signing identities, credentials, evidence payloads, and actor identities.</p>
+              </div>
+
+              <div class="settings-section card">
+                <h3>Control Room Settings</h3>
+                <p class="settings-desc">Configure your Gantry launch control room metadata stored in <code>.gantry/config.json</code>.</p>
+                <div class="settings-field">
+                  <label class="settings-label" for="settings-vault-name">Vault / Control Room Name</label>
+                  <input type="text" id="settings-vault-name" class="form-input" placeholder="e.g. Gantry Control Room" />
+                </div>
+                <div class="settings-field">
+                  <label class="settings-label" for="settings-version">Target Release Version</label>
+                  <input type="text" id="settings-version" class="form-input" placeholder="e.g. 3.4.0" />
+                </div>
+                <div class="settings-field">
+                  <label class="settings-label">Target Release Date & Time</label>
+                  <div class="settings-date-time-row">
+                    <input type="date" id="settings-release-date" class="form-input settings-date-input" />
+                    <input type="time" id="settings-release-time" class="form-input settings-time-input" />
+                  </div>
+                </div>
+                <div class="settings-field">
+                  <label class="settings-label" for="settings-report-url">Public Readiness Report URL</label>
+                  <input type="url" id="settings-report-url" class="form-input" placeholder="e.g. https://gantry.example.com" />
+                </div>
+                <div class="settings-actions">
+                  <button class="btn btn-primary" id="btn-save-config">💾 Save Config</button>
+                </div>
+              </div>
+
+              <div class="settings-section card">
+                <h3>Integrations</h3>
+                <p class="settings-desc">Enable third-party monitoring and workflow integrations for launch gating.</p>
+                <div class="settings-field settings-toggle-row">
+                  <input type="checkbox" id="settings-sentry-toggle" class="settings-toggle" />
+                  <label class="settings-label settings-toggle-label" for="settings-sentry-toggle">Enable Sentry Crash Monitoring</label>
+                </div>
+                <div id="settings-sentry-fields" class="settings-collapsible">
+                  <div class="settings-field">
+                    <label class="settings-label" for="settings-sentry-org">Sentry Organization Slug</label>
+                    <input type="text" id="settings-sentry-org" class="form-input" placeholder="e.g. my-organization" />
+                  </div>
+                  <div class="settings-field">
+                    <label class="settings-label" for="settings-sentry-project">Sentry Project Name</label>
+                    <input type="text" id="settings-sentry-project" class="form-input" placeholder="e.g. my-web-app" />
+                  </div>
+                  <div class="settings-field">
+                    <label class="settings-label" for="settings-sentry-crash-rate">Target Crash-Free Session Rate (%)</label>
+                    <input type="number" id="settings-sentry-crash-rate" class="form-input" min="0" max="100" step="0.01" placeholder="e.g. 99.5" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-section card">
+                <h3>UI Preferences</h3>
+                <p class="settings-desc">Customize the appearance of your Gantry launch readiness dashboard.</p>
+                <div class="settings-field">
+                  <label class="settings-label" for="settings-theme-select">Visual Theme Preset</label>
+                  <select id="settings-theme-select" class="form-input settings-select">
+                    <option value="default">Sleek Obsidian (Default Dark)</option>
+                    <option value="cyberpunk">Cyberpunk Neon</option>
+                    <option value="nord">Nordic Frost</option>
+                    <option value="monokai">Monokai Retro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="settings-section card">
+                <h3>App Updates</h3>
+                <p class="settings-desc">Gantry checks for updates automatically on launch. You can also check manually.</p>
+                <div class="settings-field settings-inline-row">
+                  <button class="btn btn-secondary" id="btn-check-updates" type="button">Check for updates</button>
+                  <span id="check-updates-status" class="settings-inline-status"></span>
+                </div>
+              </div>
+
+              <div class="settings-section card edition-boundary-card community-edition" data-product-edition="community" data-availability="available" data-license="Apache-2.0">
+                <div class="edition-card-header">
+                  <div class="edition-title-info">
+                    <span class="edition-badge community-license-badge">Open source · Apache-2.0</span>
+                    <h3>Gantry Community</h3>
+                  </div>
+                  <span class="edition-status-badge available">Available now</span>
+                </div>
+                <p class="edition-description">This desktop app, the CLI, the GitHub Action, public schemas, and the complete single-repository release workflow are the Apache-2.0 product. No Gantry account is required, and release data stays on your machine and in repositories or CI systems you control.</p>
+                <div class="edition-facts" aria-label="Gantry Community product boundary">
+                  <span><strong>Execution</strong> Local and customer-controlled CI</span>
+                  <span><strong>Data boundary</strong> No hosted Gantry transmission</span>
+                  <span><strong>Release workflow</strong> Audits, evidence, waivers, decisions, and packets</span>
+                </div>
+              </div>
+
+              <div class="settings-section card edition-boundary-card cloud-coming-soon" data-product-edition="cloud" data-availability="coming_soon" data-distribution="separate_commercial_product">
+                <div class="edition-card-header">
+                  <div class="edition-title-info">
+                    <span class="edition-badge cloud-preview-badge">Coming soon</span>
+                    <h3>Gantry Cloud</h3>
+                  </div>
+                  <span class="edition-status-badge">Not yet available</span>
+                </div>
+                <p class="edition-description">Paid organizational authority is planned as a separately distributed commercial product. Gantry Cloud is coming soon; this screen has no Cloud connection and Gantry 0.4 does not transmit data to a hosted Gantry service.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: LAUNCH AUDIT -->
+          <div id="view-mobile" class="view-panel active">
+            <div class="mobile-release-shell">
+              <div id="mobile-audit-workspace" hidden>
+              <section class="card mobile-release-hero">
+                <div>
+                  <div class="section-eyebrow">Mobile release control room</div>
+                  <h2>Mobile release readiness</h2>
+                  <p>Turn source, policy, signing, privacy, and human evidence into one explainable release decision.</p>
+                </div>
+                <div class="mobile-decision-cluster">
+                  <span class="mobile-decision-label">Release decision</span>
+                  <div class="mobile-decision" id="mobile-decision">NOT RUN</div>
+                  <span class="mobile-decision-caption" id="mobile-decision-caption">Run a check to establish readiness.</span>
+                </div>
+              </section>
+
+              <section class="card mobile-controls">
+                <ol class="mobile-release-steps" aria-label="Release audit workflow">
+                  <li class="active" data-mobile-step="source"><span>1</span><div><strong>Check source</strong><small>Project and policy</small></div></li>
+                  <li data-mobile-step="candidate"><span>2</span><div><strong>Bind candidate</strong><small>Exact IPA, AAB, or APK</small></div></li>
+                  <li data-mobile-step="resolve"><span>3</span><div><strong>Resolve &amp; approve</strong><small>Evidence-led decision</small></div></li>
+                </ol>
+
+                <div class="mobile-audit-mode" id="mobile-audit-mode" data-mode="source">
+                  <div>
+                    <span class="mobile-mode-badge" id="mobile-mode-badge">SOURCE READINESS</span>
+                    <strong id="mobile-mode-title">Start with a source readiness check</strong>
+                  </div>
+                  <p id="mobile-mode-description">Useful early in the release cycle. This is not a candidate-bound shipping decision.</p>
+                </div>
+
+                <label for="mobile-artifact-path">Exact release candidate <span class="mobile-optional">Optional for source checks</span></label>
+                <div class="mobile-control-row">
+                  <input id="mobile-artifact-path" class="form-input" type="text" placeholder="build/app/outputs/bundle/release/app-release.aab" />
+                  <button class="btn" id="btn-mobile-artifact">Choose candidate…</button>
+                </div>
+                <p class="mobile-field-help">Select the exact file intended for upload. Gantry fingerprints it so the decision cannot silently drift to another build.</p>
+                <div class="mobile-action-row">
+                  <button class="btn" id="btn-mobile-policy">Prepare policy</button>
+                  <button class="btn btn-primary" id="btn-mobile-audit">Run source readiness check</button>
+                  <button class="btn" id="btn-mobile-audit-cancel" hidden>Cancel check</button>
+                </div>
+                <label class="mobile-write-option"><input id="mobile-write-report" type="checkbox" checked /> Save a content-addressed JSON packet in <code>.gantry/mobile/audits/</code></label>
+                <div class="mobile-feedback" id="mobile-feedback" role="status" aria-live="polite"></div>
+              </section>
+
+              <section class="mobile-summary-grid" id="mobile-summary-grid" aria-label="Mobile audit summary"></section>
+
+              <section class="card mobile-decision-panel" id="mobile-decision-panel" hidden>
+                <div class="mobile-decision-explanation">
+                  <div class="section-eyebrow">Decision explanation</div>
+                  <h3 id="mobile-decision-title">Why this decision</h3>
+                  <ul id="mobile-decision-reasons"></ul>
+                  <div class="mobile-next-action" id="mobile-next-action"></div>
+                </div>
+                <dl class="mobile-release-context" id="mobile-release-context"></dl>
+              </section>
+
+              <section class="card mobile-track-release" id="mobile-track-release" hidden>
+                <div>
+                  <div class="section-eyebrow">Continue the durable workflow</div>
+                  <h3>Track this audited candidate</h3>
+                  <p>Create or reuse the versioned release, bind this exact artifact, rerun it under the verified release record, and open the evidence workflow.</p>
+                </div>
+                <div class="mobile-track-release-fields">
+                  <label>Release version<input class="form-input" id="mobile-track-version" placeholder="3.4.0" /></label>
+                  <label>Release name<input class="form-input" id="mobile-track-name" placeholder="Production release" /></label>
+                  <label>Release owner<input class="form-input" id="mobile-track-owner" placeholder="owner@company.com" /></label>
+                  <label>Target date <span class="mobile-optional">Optional</span><input class="form-input" id="mobile-track-target-date" type="date" /></label>
+                </div>
+                <button class="btn btn-primary" id="btn-mobile-track-release">Track candidate and continue</button>
+              </section>
+
+              <section class="card">
+                <div class="card-header-row">
+                  <div>
+                    <div class="section-eyebrow">Evidence-led findings</div>
+                    <h3 class="mobile-work-queue-title">Release work queue</h3>
+                  </div>
+                  <div id="mobile-project-meta" class="mobile-project-meta"></div>
+                </div>
+                <div class="mobile-findings-toolbar" id="mobile-findings-toolbar" hidden>
+                  <div class="mobile-finding-filters" role="group" aria-label="Filter findings">
+                    <button class="mobile-filter active" data-mobile-filter="attention" aria-pressed="true">Needs attention <span id="mobile-filter-attention-count">0</span></button>
+                    <button class="mobile-filter" data-mobile-filter="pass" aria-pressed="false">Passed <span id="mobile-filter-pass-count">0</span></button>
+                    <button class="mobile-filter" data-mobile-filter="all" aria-pressed="false">All <span id="mobile-filter-all-count">0</span></button>
+                  </div>
+                  <div class="mobile-status-legend" aria-label="Finding status legend">
+                    <span><i class="fail"></i> Blocked</span>
+                    <span><i class="warning"></i> Review</span>
+                    <span><i class="manual"></i> Human proof</span>
+                    <span><i class="unavailable"></i> Tool unavailable</span>
+                  </div>
+                </div>
+                <div id="mobile-findings" class="mobile-findings">
+                  <div class="mobile-empty"><strong>No release check yet</strong><span>Run a source check now, or choose the exact candidate to make the decision artifact-bound.</span></div>
+                </div>
+              </section>
+              </div>
+
+              <div id="mobile-policy-workspace" hidden>
+                <section class="card mobile-policy-hero">
+                  <div>
+                    <div class="section-eyebrow">Repository-owned enforcement</div>
+                    <h2>Release policies</h2>
+                    <p>Review the rules that turn source, store candidate, signing, privacy, and human evidence into an explainable release decision.</p>
+                  </div>
+                  <div class="mobile-policy-status" id="mobile-policy-status" data-state="repository">
+                    <strong>Policy as code</strong>
+                    <span>.gantry/mobile-policy.json</span>
+                  </div>
+                </section>
+
+                <section class="mobile-policy-grid">
+                  <article class="card mobile-policy-card">
+                    <div class="section-eyebrow">Decision behavior</div>
+                    <h3>Enforcement levels</h3>
+                    <dl class="mobile-policy-rules">
+                      <div><dt>Automated failures</dt><dd>Block the release</dd></div>
+                      <div><dt>Warnings</dt><dd>Require review</dd></div>
+                      <div><dt>Human evidence</dt><dd>Require accountable proof</dd></div>
+                      <div><dt>Unavailable tooling</dt><dd>Visible, never silently passed</dd></div>
+                    </dl>
+                  </article>
+                  <article class="card mobile-policy-card">
+                    <div class="section-eyebrow">Trust boundary</div>
+                    <h3>Candidate integrity</h3>
+                    <ul>
+                      <li>Bind decisions to the exact IPA, AAB, or APK SHA-256.</li>
+                      <li>Check approved signing identities where the platform permits verification.</li>
+                      <li>Invalidate stale results when candidate, policy, code, or tool behavior changes.</li>
+                    </ul>
+                  </article>
+                  <article class="card mobile-policy-card">
+                    <div class="section-eyebrow">Exceptions</div>
+                    <h3>Reviewable overrides</h3>
+                    <ul>
+                      <li>Waivers require an approver, rationale, and expiry.</li>
+                      <li>Source exceptions stay in version control with the policy.</li>
+                      <li>Manual evidence remains distinct from automated passes.</li>
+                    </ul>
+                  </article>
+                  <article class="card mobile-policy-card">
+                    <div class="section-eyebrow">Policy identity</div>
+                    <h3>Versioned and portable</h3>
+                    <dl class="mobile-policy-rules">
+                      <div><dt>Policy pack</dt><dd>2026.07</dd></div>
+                      <div><dt>Schema</dt><dd>mobile-policy.schema.json</dd></div>
+                      <div><dt>Ownership</dt><dd>Your repository</dd></div>
+                      <div><dt>Runtime</dt><dd>CLI, Action, desktop</dd></div>
+                    </dl>
+                  </article>
+                </section>
+
+                <section class="card mobile-policy-actions">
+                  <div>
+                    <h3>Manage the policy as code</h3>
+                    <p>Gantry preserves an existing policy. Creating one is safe; edits remain ordinary reviewable repository changes.</p>
+                  </div>
+                  <div>
+                    <button class="btn btn-primary" id="btn-mobile-policy-create">Create or verify policy</button>
+                    <button class="btn" id="btn-mobile-policy-open">Open policy file</button>
+                  </div>
+                  <div class="mobile-feedback" id="mobile-policy-feedback" role="status" aria-live="polite"></div>
+                </section>
+              </div>
+
+              <div id="mobile-release-workspace">
+                <section class="card mobile-release-browser-header">
+                  <div>
+                    <div class="section-eyebrow">Release-manager cockpit</div>
+                    <h2>Release portfolio</h2>
+                    <p>See what is blocked, awaiting review, aging, or carrying accepted risk—then open the verified record behind it.</p>
+                  </div>
+                  <button class="btn" id="btn-mobile-release-refresh">Refresh releases</button>
+                </section>
+                <section class="card mobile-release-onboarding" id="mobile-release-onboarding">
+                  <div class="mobile-release-onboarding-header">
+                    <div>
+                      <div class="section-eyebrow">Guided first release</div>
+                      <h3>Get to an accountable candidate decision</h3>
+                    </div>
+                    <div class="mobile-release-onboarding-summary">
+                      <span id="mobile-release-onboarding-progress">0 of 6 complete</span>
+                      <button class="btn btn-compact" id="btn-mobile-onboarding-toggle" type="button" aria-expanded="true">Hide steps</button>
+                    </div>
+                  </div>
+                  <ol id="mobile-release-onboarding-steps" class="mobile-release-onboarding-steps"></ol>
+                </section>
+                <section class="card mobile-release-cockpit" aria-label="Release portfolio summary">
+                  <div id="mobile-release-portfolio-metrics" class="mobile-release-portfolio-metrics"></div>
+                  <div class="mobile-release-queue-header">
+                    <div>
+                      <div class="section-eyebrow">Prioritized review queue</div>
+                      <h3>What needs attention</h3>
+                    </div>
+                    <label class="mobile-release-search">Search releases
+                      <input class="form-input" id="mobile-release-search" type="search" placeholder="Version, owner, release, or platform" autocomplete="off" />
+                    </label>
+                  </div>
+                  <div class="mobile-release-queue-filters" role="group" aria-label="Filter release review queue">
+                    <button class="mobile-filter active" data-release-queue-filter="all" aria-pressed="true">All attention</button>
+                    <button class="mobile-filter" data-release-queue-filter="blocked" aria-pressed="false">Blocked</button>
+                    <button class="mobile-filter" data-release-queue-filter="approval" aria-pressed="false">Approvals</button>
+                    <button class="mobile-filter" data-release-queue-filter="risk" aria-pressed="false">Risk &amp; expiry</button>
+                    <button class="mobile-filter" data-release-queue-filter="schedule" aria-pressed="false">Schedule</button>
+                  </div>
+                  <div id="mobile-release-review-queue" class="mobile-release-review-queue" aria-live="polite"></div>
+                </section>
+                <div class="mobile-release-browser">
+                  <aside class="card mobile-release-list-panel" aria-label="Verified releases">
+                    <div class="mobile-release-list-heading">
+                      <strong>Verified releases</strong>
+                      <div class="mobile-release-presentation" role="group" aria-label="Release presentation">
+                        <button class="active" data-release-presentation="list" aria-pressed="true">List</button>
+                        <button data-release-presentation="calendar" aria-pressed="false">Calendar</button>
+                      </div>
+                      <span id="mobile-release-list-count">0</span>
+                    </div>
+                    <div id="mobile-release-list" class="mobile-release-list"></div>
+                  </aside>
+                  <section class="card mobile-release-detail" id="mobile-release-detail" aria-live="polite">
+                    <div class="mobile-empty"><strong>Select a release</strong><span>Choose a verified release to inspect its active candidates and decision history.</span></div>
+                  </section>
+                </div>
+                <div class="mobile-feedback" id="mobile-release-feedback" role="status" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="view-audit" class="view-panel">
+            <div class="audit-header">
+              <button id="btn-run-audit" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="spinner-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3 3L22 4" />
+                </svg>
+                <span>Run Launch Audit</span>
+              </button>
+            </div>
+
+            <div class="audit-dashboard audit-dashboard-grid">
+              <!-- Radial Readiness Score Gauge Card -->
+              <div class="card audit-score-card">
+                <div class="card-title">Launch Readiness Score</div>
+                <div class="gauge-container">
+                  <svg class="progress-ring" width="160" height="160">
+                    <circle class="progress-ring__circle-bg" stroke="rgba(255, 255, 255, 0.05)" stroke-width="12" fill="transparent" r="70" cx="80" cy="80"/>
+                    <circle class="progress-ring__circle" stroke="#10B981" stroke-width="12" fill="transparent" r="70" cx="80" cy="80" stroke-dasharray="439.82" stroke-dashoffset="439.82" style="transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%;"/>
+                  </svg>
+                  <div class="gauge-value" id="audit-score-value">0%</div>
+                </div>
+                <div class="audit-status-badge" id="audit-status-text">Pending Audit</div>
+              </div>
+
+              <!-- Categories Breakdown Grid -->
+              <div class="card audit-categories-card">
+                <div class="card-title">Launch Capability Category Scores</div>
+                <div class="categories-grid" id="audit-categories-grid">
+                  <!-- Generated dynamically in JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Launch Sandbox Panel -->
+            <div class="card sandbox-card">
+              <div class="card-title sandbox-title">
+                <div class="sandbox-title-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="sandbox-title-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                  </svg>
+                  <span>Launch Simulation Sandbox</span>
+                </div>
+                <span class="sandbox-badge" id="sandbox-active-badge" style="display:none;">Active Simulation</span>
+              </div>
+              <div class="sandbox-grid">
+                <!-- Column 1: Sliders -->
+                <div class="sandbox-col">
+                  <div class="sandbox-field">
+                    <label class="sandbox-label">Sentry Crash-Free Rate: <span id="sandbox-crash-val" class="sandbox-highlight">99.8%</span></label>
+                    <input type="range" id="sandbox-crash-rate" min="90" max="100" step="0.1" value="99.8" class="form-range sandbox-range">
+                  </div>
+                  <div class="sandbox-field">
+                    <label class="sandbox-label">QA Suite Completion: <span id="sandbox-qa-val" class="sandbox-highlight">43%</span></label>
+                    <input type="range" id="sandbox-qa-pct" min="0" max="100" step="1" value="43" class="form-range sandbox-range">
+                  </div>
+                </div>
+
+                <!-- Column 2: Waive Blocker & Source File Staleness -->
+                <div class="sandbox-col">
+                  <div class="sandbox-field">
+                    <label class="sandbox-label">Waive Blocker ID:</label>
+                    <select id="sandbox-waive-blocker" class="form-select sandbox-select">
+                      <option value="">-- None --</option>
+                      <!-- Option list populated dynamically -->
+                    </select>
+                  </div>
+                  <div class="sandbox-field">
+                    <label class="sandbox-label">Simulate Source Code Change:</label>
+                    <select id="sandbox-simulate-file" class="form-select sandbox-select">
+                      <option value="">-- None --</option>
+                      <option value="lib/routing/checkout_router.dart">lib/routing/checkout_router.dart (BLK-102)</option>
+                      <option value="android/app/src/main/AndroidManifest.xml">AndroidManifest.xml (QA-REGRESSION)</option>
+                      <option value="lib/analytics/release_metrics.dart">lib/analytics/release_metrics.dart (Uncovered)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Column 3: Stakeholder Sign-Offs -->
+                <div class="sandbox-col">
+                  <label class="sandbox-label">Stakeholder Sign-Offs:</label>
+                  <div class="sandbox-signoff-checklist">
+                    <label class="form-checkbox-label sandbox-checkbox-label">
+                      <input type="checkbox" id="sandbox-signoff-pm" class="form-checkbox sandbox-checkbox"> PM (@pm_dan)
+                    </label>
+                    <label class="form-checkbox-label sandbox-checkbox-label">
+                      <input type="checkbox" id="sandbox-signoff-dev" class="form-checkbox sandbox-checkbox"> Dev (@dev_jane)
+                    </label>
+                    <label class="form-checkbox-label sandbox-checkbox-label">
+                      <input type="checkbox" id="sandbox-signoff-qa" class="form-checkbox sandbox-checkbox"> QA (@qa_bob)
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="sandbox-actions">
+                <button class="btn btn-sandbox-clear" id="btn-sandbox-clear">Clear Simulation</button>
+                <button class="btn btn-primary btn-sandbox-apply" id="btn-sandbox-apply">Apply Simulation</button>
+              </div>
+            </div>
+
+            <!-- Evidence trace & auto-generated tasks -->
+            <div class="audit-log-section audit-log-grid">
+              <div class="card audit-tasks-card">
+                <div class="card-title">Auto-Generated Correction Tasks</div>
+                <div class="audit-tasks-list scrollable-list" id="audit-tasks-list">
+                  <p class="empty-state">No tasks generated yet. Run audit to populate.</p>
+                </div>
+              </div>
+
+              <!-- CODEBASE CHANGE IMPACT -->
+              <div class="card audit-impact-card">
+                <div class="card-title text-primary" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 20px; height: 20px;">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    <span>Codebase Change Impact</span>
+                  </div>
+                  <div class="impact-view-tabs" style="display: flex; gap: 4px; background: rgba(0,0,0,0.2); padding: 2px; border-radius: 6px;">
+                    <button class="btn btn-xs active" id="btn-impact-view-trace" style="border: none; padding: 2px 8px; border-radius: 4px; cursor: pointer;">Trace</button>
+                    <button class="btn btn-xs" id="btn-impact-view-graph" style="border: none; padding: 2px 8px; border-radius: 4px; cursor: pointer;">Graph</button>
+                  </div>
+                </div>
+                <div class="impact-info">
+                  Comparing against: <code id="impact-base-ref" class="hash-pill">HEAD~1</code>
+                </div>
+                <div class="audit-impact-list scrollable-list" id="audit-impact-list">
+                  <p class="empty-state">No changes detected since last release tag.</p>
+                </div>
+                <!-- Visual Graph Container -->
+                <div class="audit-impact-graph-container" id="audit-impact-graph-container" style="display: none; height: 350px; position: relative; overflow: hidden; background: rgba(0,0,0,0.15); border-radius: 8px; border: 1px solid var(--border-glass);">
+                  <!-- SVG canvas for rendering the graph nodes & edges -->
+                  <svg id="audit-impact-svg" style="width: 100%; height: 100%;"></svg>
+                  <div id="audit-impact-inspector" style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(30, 30, 40, 0.95); border: 1px solid var(--border-glass); border-radius: 6px; padding: 8px 12px; font-size: 12px; display: none; backdrop-filter: blur(10px); z-index: 10;">
+                    <div style="font-weight: bold; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center;">
+                      <span id="inspector-title" style="color: var(--text-primary);">Node Details</span>
+                      <button id="btn-inspector-close" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px;">&times;</button>
+                    </div>
+                    <div id="inspector-content" style="color: var(--text-secondary);">Select a node to inspect...</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card audit-evidence-card">
+                <div class="card-title">Evidence & Trace Graph</div>
+                <div class="evidence-list scrollable-list" id="audit-evidence-list">
+                  <p class="empty-state">No evidence records yet. Run audit to view.</p>
+                </div>
+              </div>
+
+              <div class="card audit-scorecard-card">
+                <div class="card-title">Detailed Scorecard Evaluation</div>
+                <div class="audit-scorecard-list scrollable-list" id="audit-scorecard-rules-list">
+                  <p class="empty-state">No scorecard rules evaluated yet. Run audit to view.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: DOCS HEALTH -->
+          <div id="view-health" class="view-panel">
+            <div class="health-grid">
+              <!-- Left side: Missing & Stale Docs -->
+              <div class="card">
+                <div class="card-title text-pending">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  Stale & Missing Documentation
+                </div>
+                <div class="health-section">
+                  <span class="health-group-label">Missing Required Files</span>
+                  <div class="checklist-container" id="health-missing-docs">
+                    <!-- Missing docs -->
+                  </div>
+                </div>
+                <div class="health-section">
+                  <span class="health-group-label">Stale Documents (Source Code Changed)</span>
+                  <div class="checklist-container" id="health-stale-docs">
+                    <!-- Stale docs -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right side: Formatting & Links Warnings -->
+              <div class="card">
+                <div class="card-title text-blocker">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Formatting & Link Errors
+                </div>
+                <div class="health-section">
+                  <span class="health-group-label">Schema Validation Warnings</span>
+                  <div class="checklist-container" id="health-validation-errors">
+                    <!-- Schema validation warnings -->
+                  </div>
+                </div>
+                <div class="health-section">
+                  <span class="health-group-label">Broken Internal Wiki Links</span>
+                  <div class="checklist-container" id="health-broken-links">
+                    <!-- Broken links -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: BLOCKERS BOARD (KANBAN) -->
+          <div id="view-blockers" class="view-panel">
+            <div class="view-toolbar">
+              <button class="btn btn-primary" id="btn-new-blocker">New Blocker</button>
+            </div>
+            <div class="kanban-board">
+              <div class="kanban-column" id="col-open">
+                <div class="column-header">Open <span class="column-badge" id="badge-open">0</span></div>
+                <!-- Kanban cards -->
+              </div>
+              <div class="kanban-column" id="col-progress">
+                <div class="column-header">In Progress <span class="column-badge" id="badge-progress">0</span></div>
+              </div>
+              <div class="kanban-column" id="col-blocked">
+                <div class="column-header">Blocked <span class="column-badge" id="badge-blocked">0</span></div>
+              </div>
+              <div class="kanban-column" id="col-resolved">
+                <div class="column-header">Resolved <span class="column-badge" id="badge-resolved">0</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: QA CHECKLIST -->
+          <div id="view-qa" class="view-panel">
+            <div class="card qa-card">
+              <div class="card-header-row">
+                <div class="card-title" id="qa-card-title">QA Suite Toggles</div>
+                <button class="btn btn-primary" id="btn-new-qa">New QA Plan</button>
+              </div>
+              <div class="qa-suite-tabs" id="qa-suite-tabs"></div>
+              <div class="checklist-container" id="qa-regression-list">
+                <!-- Loaded dynamically from selected QA suite -->
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: GO/NO-GO ROOM -->
+          <div id="view-gonogo" class="view-panel">
+            <!-- Readiness Recommendation Banner -->
+            <div class="gonogo-recommendation" id="gonogo-recommendation">
+              <!-- Dynamically rendered recommendation -->
+            </div>
+
+            <div class="gonogo-grid">
+              <!-- Left: Required Gates -->
+              <div class="card">
+                <div class="card-title">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  Required Launch Gates
+                </div>
+                <div class="checklist-container" id="gonogo-gates-list">
+                  <!-- Gate checklist items -->
+                </div>
+              </div>
+
+              <!-- Right: Stakeholder Sign-offs -->
+              <div class="card">
+                <div class="card-title">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Stakeholder Sign-offs
+                </div>
+                <div id="gonogo-signoffs-table">
+                  <!-- Sign-off table rows -->
+                </div>
+              </div>
+            </div>
+
+            <div class="gonogo-grid">
+              <!-- Blocking Issues Summary -->
+              <div class="card">
+                <div class="card-title text-blocker">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  Blocking Issues
+                </div>
+                <div id="gonogo-blocking-issues">
+                  <!-- Open blockers that prevent launch -->
+                </div>
+              </div>
+
+              <!-- QA Completion + Stale Docs -->
+              <div class="card">
+                <div class="card-title">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                  Evidence & Completion
+                </div>
+                <div id="gonogo-evidence">
+                  <!-- QA bar + stale docs -->
+                </div>
+              </div>
+            </div>
+
+            <div class="gonogo-grid" style="margin-top: 16px;">
+              <!-- Accepted Risks / Waivers -->
+              <div class="card" style="grid-column: span 2;">
+                <div class="card-title" style="color: #a5b4fc;">
+                  🛡 Accepted Risks (Active Waivers)
+                </div>
+                <div class="checklist-container" id="gonogo-waivers-list">
+                  <!-- Waivers list -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: TIMELINE -->
+          <div id="view-timeline" class="view-panel">
+            <div class="timeline-container" id="timeline-flow">
+              <!-- Loaded dynamically from git log / file change tracking -->
+            </div>
+          </div>
+
+          <!-- VIEW: VAULT EDITOR -->
+          <div id="view-editor" class="view-panel">
+            <div class="editor-workspace">
+
+              <!-- Toolbar -->
+              <div class="editor-toolbar">
+                <span class="editor-path" id="active-edit-path">go_no_go.md</span>
+                <div class="editor-preview-modes">
+                  <button class="btn btn-mode active" data-mode="edit">Edit</button>
+                  <button class="btn btn-mode" data-mode="split">Split</button>
+                  <button class="btn btn-mode" data-mode="preview">Preview</button>
+                </div>
+                <div class="editor-actions">
+                  <button class="btn btn-open-ide" id="btn-open-ide">💻 Open in IDE</button>
+                  <button class="btn btn-primary btn-save-file" id="btn-save-file">💾 Save</button>
+                  <button class="btn btn-icon" id="btn-editor-fullscreen" title="Toggle fullscreen (F11)">
+                    <svg id="icon-expand" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                    <svg id="icon-compress" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Body: file tree | editor/preview | action inspector -->
+              <div class="editor-body">
+
+                <div class="editor-sidebar" id="editor-sidebar">
+                  <div class="sidebar-header">
+                    <span class="sidebar-title">Vault Files</span>
+                    <button class="btn btn-icon" id="btn-sidebar-toggle" title="Toggle sidebar">‹</button>
+                  </div>
+                  <div class="file-tree" id="file-tree"></div>
+                </div>
+
+                <div class="editor-surface">
+                  <div class="editor-tabs-strip" id="editor-tabs-strip"></div>
+                  <div class="editor-surface-body">
+                    <textarea class="editor-textarea" id="editor-field" placeholder="# Markdown Document Content"></textarea>
+                    <div class="editor-preview" id="editor-preview" style="display:none"></div>
+                    <div class="editor-empty-state" id="editor-empty-state" style="display:none">
+                      <div class="empty-state-content">
+                        <span class="empty-icon">📝</span>
+                        <h3>No file open</h3>
+                        <p>Select a file from the vault tree on the left to start editing.</p>
+                        <div style="margin-top: 18px; display: flex; gap: 8px; justify-content: center;">
+                          <button class="btn btn-primary" id="btn-editor-new-blocker">New Blocker</button>
+                          <button class="btn btn-secondary" id="btn-editor-new-qa">New QA Plan</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="editor-inspector" id="editor-inspector">
+                  <details class="inspector-section" open>
+                    <summary class="inspector-summary">Action Items</summary>
+                    <div id="editor-task-extract" class="inspector-body"></div>
+                  </details>
+                </div>
+
+              </div>
+
+              <!-- Status bar -->
+              <div class="editor-statusbar" id="editor-statusbar"></div>
+
+            </div>
+          </div>
+
+        </section>
+      </main>
+
+      <!-- AUDIT PREVIEW MODAL -->
+      <div class="modal-overlay" id="audit-preview-modal" role="dialog" aria-modal="true" aria-label="Confirm launch audit execution" aria-hidden="true" hidden inert>
+        <div class="modal-box">
+          <h3 class="modal-title">Confirm Launch Audit Execution</h3>
+          <p class="modal-description">The safety audit analyzed the workspace. Confirming this action will write/update the following items in your repository:</p>
+
+          <div class="modal-sections-wrapper">
+            <!-- Documents to create -->
+            <div class="modal-preview-section" id="preview-docs-section" style="display:none;">
+              <div class="modal-preview-section-title" style="color: var(--color-pending);">📄 Draft templates to create:</div>
+              <ul class="modal-preview-list" id="preview-docs-list"></ul>
+            </div>
+
+            <!-- Tasks to create -->
+            <div class="modal-preview-section" id="preview-tasks-create-section" style="display:none;">
+              <div class="modal-preview-section-title" style="color: var(--color-primary);">📋 Correction tasks to append:</div>
+              <ul class="modal-preview-list" id="preview-tasks-create-list"></ul>
+            </div>
+
+            <!-- Tasks to auto resolve -->
+            <div class="modal-preview-section" id="preview-tasks-resolve-section" style="display:none;">
+              <div class="modal-preview-section-title" style="color: var(--color-go);">✅ Tasks to auto-resolve (mark as fixed):</div>
+              <ul class="modal-preview-list" id="preview-tasks-resolve-list"></ul>
+            </div>
+
+            <!-- Affected files -->
+            <div class="modal-preview-section" id="preview-affected-section" style="display:none;">
+              <div class="modal-preview-section-title" style="color: var(--text-primary);">🛠️ Affected files:</div>
+              <ul class="modal-preview-list" id="preview-affected-list"></ul>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-cancel" id="btn-preview-cancel">Cancel</button>
+            <button class="btn btn-primary" id="btn-preview-confirm">Write Changes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLOSE TAB CONFIRMATION MODAL -->
+      <div class="modal-overlay" id="close-tab-modal" role="dialog" aria-modal="true" aria-label="Unsaved changes" aria-hidden="true" hidden inert>
+        <div class="modal-box">
+          <h3 class="modal-title">Unsaved Changes</h3>
+          <p class="modal-description" id="close-tab-modal-desc">Document has unsaved changes. Do you want to save them before closing?</p>
+          <div class="modal-actions">
+            <button class="btn btn-cancel" id="btn-close-tab-cancel">Cancel</button>
+            <button class="btn btn-secondary" id="btn-close-tab-discard">Discard Changes</button>
+            <button class="btn btn-primary" id="btn-close-tab-save">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CREATE BLOCKER MODAL -->
+      <div class="modal-overlay" id="create-blocker-modal" role="dialog" aria-modal="true" aria-label="Create blocker" aria-hidden="true" hidden inert>
+        <div class="modal-box">
+          <h3 class="modal-title">Create Blocker</h3>
+          <form class="wizard-form" id="create-blocker-form">
+            <label class="wizard-field">
+              <span>ID</span>
+              <input id="blocker-id-input" type="text" required />
+            </label>
+            <label class="wizard-field">
+              <span>Title</span>
+              <input id="blocker-title-input" type="text" required />
+            </label>
+            <div class="wizard-row">
+              <label class="wizard-field">
+                <span>Severity</span>
+                <select id="blocker-severity-input">
+                  <option value="P0">P0</option>
+                  <option value="P1" selected>P1</option>
+                  <option value="P2">P2</option>
+                </select>
+              </label>
+              <label class="wizard-field">
+                <span>Owner</span>
+                <input id="blocker-owner-input" type="text" placeholder="@owner" required />
+              </label>
+            </div>
+            <label class="wizard-field">
+              <span>Source Files</span>
+              <input id="blocker-source-files-input" type="text" placeholder="src/app.ts, src/api.ts" />
+            </label>
+            <div class="modal-actions">
+              <button class="btn btn-cancel" type="button" id="btn-create-blocker-cancel">Cancel</button>
+              <button class="btn btn-primary" type="submit">Create Blocker</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- CREATE QA MODAL -->
+      <div class="modal-overlay" id="create-qa-modal" role="dialog" aria-modal="true" aria-label="Create QA plan" aria-hidden="true" hidden inert>
+        <div class="modal-box">
+          <h3 class="modal-title">Create QA Plan</h3>
+          <form class="wizard-form" id="create-qa-form">
+            <label class="wizard-field">
+              <span>ID</span>
+              <input id="qa-id-input" type="text" required />
+            </label>
+            <label class="wizard-field">
+              <span>Title</span>
+              <input id="qa-title-input" type="text" required />
+            </label>
+            <label class="wizard-field">
+              <span>Owner</span>
+              <input id="qa-owner-input" type="text" placeholder="@qa_owner" required />
+            </label>
+            <div class="wizard-field">
+              <span>Platforms</span>
+              <div class="platform-options">
+                <label><input type="checkbox" name="qa-platform" value="macos" checked /> macOS</label>
+                <label><input type="checkbox" name="qa-platform" value="windows" /> Windows</label>
+                <label><input type="checkbox" name="qa-platform" value="linux" /> Linux</label>
+                <label><input type="checkbox" name="qa-platform" value="ios" /> iOS</label>
+                <label><input type="checkbox" name="qa-platform" value="android" /> Android</label>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button class="btn btn-cancel" type="button" id="btn-create-qa-cancel">Cancel</button>
+              <button class="btn btn-primary" type="submit">Create QA Plan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- COMMIT DETAILS MODAL -->
+      <div class="modal-overlay" id="commit-details-modal" role="dialog" aria-modal="true" aria-label="Commit details" aria-hidden="true" hidden inert>
+        <div class="modal-box" style="max-width: 650px;">
+          <h3 class="modal-title" id="commit-modal-title">Commit Details</h3>
+          <div class="commit-modal-meta" style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; font-family: var(--font-mono); display: flex; justify-content: space-between;">
+            <span id="commit-modal-hash"></span>
+            <span id="commit-modal-author"></span>
+            <span id="commit-modal-date"></span>
+          </div>
+          <div class="commit-modal-body" style="font-size: 13.5px; line-height: 1.6; max-height: 380px; overflow-y: auto; background: rgba(0,0,0,0.25); border: 1px solid var(--border-glass); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--text-primary);" id="commit-modal-subject"></h4>
+            <pre id="commit-modal-body-text" style="font-family: var(--font-sans); white-space: pre-wrap; margin: 0 0 16px 0; color: var(--text-secondary);"></pre>
+            <div style="border-top: 1px solid var(--border-glass); padding-top: 12px;">
+              <div style="font-weight: 700; font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; font-family: var(--font-sans);">Changed Files:</div>
+              <pre id="commit-modal-stat" style="font-family: var(--font-mono); font-size: 11.5px; color: var(--color-primary); margin: 0; white-space: pre; overflow-x: auto;"></pre>
+            </div>
+          </div>
+          <div class="modal-actions" style="justify-content: flex-end;">
+            <button class="btn btn-secondary" id="btn-commit-modal-close">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPOTLIGHT SEARCH OVERLAY -->
+      <div class="spotlight-overlay" id="spotlight-overlay" role="dialog" aria-modal="true" aria-label="Search Gantry" aria-hidden="true" hidden inert>
+        <div class="spotlight-box">
+          <div class="spotlight-input-container">
+            <input class="spotlight-input" id="spotlight-input" type="text" placeholder="Type a blocker ID, note title, or quick capture action..." />
+          </div>
+          <div class="spotlight-results" id="spotlight-results">
+            <!-- Search items -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

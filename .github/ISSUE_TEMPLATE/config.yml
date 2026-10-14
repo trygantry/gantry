@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions & Discussions
+    url: https://github.com/trygantry/gantry/discussions
+    about: Ask questions, share ideas, and discuss Gantry with the community.
+  - name: Security report
+    url: https://github.com/trygantry/gantry/security/advisories/new
+    about: Report a security vulnerability privately (do not open a public issue).

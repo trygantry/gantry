@@ -1,0 +1,29 @@
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+
+  /* Flat operator-grade palette */
+  --bg-app: #080b11;
+  --bg-sidebar: #0c0f16;
+  --bg-card: #161b22;
+  --bg-secondary: #10151d;
+  --border-glass: #30363d;
+  --border-color: #2a313b;
+  --border-focus: #8b949e;
+  
+  --text-primary: #f0f6fc;
+  --text-secondary: #b1bac4;
+  --text-muted: #8b949e;
+  
+  /* Status Colors (strictly reserved for readiness meaning) */
+  --color-go: #10b981;
+  --color-go-glow: transparent;
+  --color-pending: #f59e0b;
+  --color-pending-glow: transparent;
+  --color-blocker: #ef4444;
+  --color-danger: var(--color-blocker);
+  --color-blocker-glow: transparent;
+  --color-primary: #3b82f6;
+  --color-primary-glow: transparent;
+}

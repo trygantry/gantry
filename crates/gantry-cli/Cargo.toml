@@ -1,0 +1,41 @@
+[package]
+name = "gantry-cli"
+version.workspace = true
+description = "Gantry Community CLI for local-first mobile release governance, candidate audits, release packets, and Go/No-Go enforcement."
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme = "../../README.md"
+keywords = ["mobile", "release", "ci", "governance", "supply-chain"]
+categories = ["command-line-utilities", "development-tools"]
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "gantry"
+path = "src/main.rs"
+
+[dependencies]
+gantry-core = { version = "0.5.2", path = "../gantry-core" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+ureq = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+notify = { workspace = true }
+colored = { workspace = true }
+clap = { workspace = true }
+clap_complete = { workspace = true }
+dialoguer = { workspace = true }
+semver = { workspace = true }
+
+[features]
+telemetry = []
+
+[dev-dependencies]
+zip = { workspace = true }

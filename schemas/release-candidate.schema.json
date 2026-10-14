@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/release-candidate.schema.json",
+  "title": "Gantry Release Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "release_id",
+    "platform",
+    "artifact_kind",
+    "artifact_path",
+    "artifact_path_relative",
+    "artifact_sha256",
+    "artifact_size_bytes",
+    "git_commit",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "id": { "type": "string", "pattern": "^CAN-[A-F0-9]{10}$" },
+    "release_id": { "type": "string", "pattern": "^REL-[A-F0-9]{10}$" },
+    "platform": { "enum": ["ios", "android"] },
+    "artifact_kind": { "enum": ["ipa", "aab", "apk"] },
+    "artifact_path": { "type": "string", "minLength": 1 },
+    "artifact_path_relative": { "type": "boolean" },
+    "artifact_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "artifact_size_bytes": { "type": "integer", "minimum": 0 },
+    "git_commit": {
+      "type": ["string", "null"],
+      "pattern": "^[a-fA-F0-9]{7,64}$"
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "platform": { "const": "ios" } } },
+      "then": { "properties": { "artifact_kind": { "const": "ipa" } } }
+    },
+    {
+      "if": { "properties": { "artifact_kind": { "enum": ["aab", "apk"] } } },
+      "then": { "properties": { "platform": { "const": "android" } } }
+    }
+  ]
+}

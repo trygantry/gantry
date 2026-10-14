@@ -1,0 +1,42 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/gantry-core",
+    "crates/gantry-cli",
+    "src-tauri",
+]
+
+[workspace.package]
+version = "0.5.2"
+edition = "2024"
+rust-version = "1.88"
+authors = ["The Gantry Authors"]
+license = "Apache-2.0"
+repository = "https://github.com/trygantry/gantry"
+homepage = "https://gantryapp.com"
+documentation = "https://github.com/trygantry/gantry/tree/main/docs"
+
+[workspace.dependencies]
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
+yaml_serde = "0.10.4"
+chrono = { version = "0.4.45", features = ["serde"] }
+jsonschema = "0.26.2"
+roxmltree = "0.20.0"
+sha2 = "0.10.9"
+hex = "0.4.3"
+uuid = { version = "1.23.3", features = ["v4"] }
+notify = { version = "6.1.1", features = ["serde"] }
+colored = "3.1.1"
+ureq = { version = "3.3.0", features = ["json"] }
+clap = { version = "4.6.1", features = ["derive", "env"] }
+clap_complete = "4.6.5"
+dialoguer = { version = "0.12.0", default-features = false }
+semver = "1.0.25"
+plist = "1.10.0"
+zip = { version = "4.6.1", default-features = false, features = ["deflate"] }
+
+[workspace.lints.clippy]
+# Rust 1.88 introduced this style lint across a large legacy formatting surface.
+# Keep strict Clippy focused on correctness and maintainability for this release.
+uninlined_format_args = "allow"

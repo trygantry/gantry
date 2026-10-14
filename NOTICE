@@ -1,0 +1,12 @@
+Gantry Community
+Copyright 2026 Gantry
+
+This product is licensed under the Apache License, Version 2.0. See the LICENSE file.
+
+Third-party software:
+This repository depends on open-source Rust crates (see Cargo.lock) and npm packages
+(see package-lock.json). It also bundles minified copies of marked (MIT License) and
+DOMPurify (Apache-2.0 or MPL-2.0) in src/. Each is distributed under its own license;
+see the headers of those files and the metadata of each dependency.
+
+The "Gantry" name and logo are not licensed under Apache-2.0. See TRADEMARKS.md.

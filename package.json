@@ -1,0 +1,61 @@
+{
+  "name": "gantry",
+  "private": true,
+  "version": "0.5.2",
+  "type": "module",
+  "description": "Local-first mobile release governance for source, IPA/AAB/APK evidence, and plain-language Go / At Risk / No-Go decisions.",
+  "license": "Apache-2.0",
+  "author": "The Gantry Authors",
+  "homepage": "https://github.com/trygantry/gantry",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trygantry/gantry.git"
+  },
+  "bugs": {
+    "url": "https://github.com/trygantry/gantry/issues"
+  },
+  "keywords": [
+    "launch",
+    "release",
+    "readiness",
+    "tauri",
+    "ci",
+    "ai-agents",
+    "local-first",
+    "go-no-go",
+    "mobile-release"
+  ],
+  "scripts": {
+    "tauri": "tauri",
+    "gantry:validate": "cargo run -p gantry-cli -- validate",
+    "gantry:validate:ci": "cargo run -p gantry-cli -- validate --ci",
+    "gantry:summarize": "cargo run -p gantry-cli -- summarize",
+    "gantry:index": "cargo run -p gantry-cli -- index",
+    "gantry:audit": "cargo run -p gantry-cli -- audit",
+    "gantry:audit:dry": "cargo run -p gantry-cli -- audit --dry-run",
+    "gantry:impact": "cargo run -p gantry-cli -- impact",
+    "gantry:tasks": "cargo run -p gantry-cli -- tasks",
+    "gantry:init": "cargo run -p gantry-cli -- init --auto",
+    "gantry:mobile:detect": "cargo run -p gantry-cli -- mobile detect",
+    "gantry:mobile:audit": "cargo run -p gantry-cli -- mobile audit",
+    "check:js": "find src -name '*.js' ! -name '*.min.js' -exec node --check {} +",
+    "test:contract": "node --experimental-vm-modules tests/js/contract.test.js",
+    "test:mobile-workflow": "node --experimental-vm-modules tests/js/mobile-workflows.test.js",
+    "generate:contracts": "node scripts/generate-frontend-contracts.mjs",
+    "check:contracts": "node scripts/generate-frontend-contracts.mjs --check",
+    "check:release-version": "node scripts/ci/verify-release-version.mjs",
+    "test:installers": "node --test tests/installers.test.mjs",
+    "test:release-assets": "node --test tests/release-assets.test.mjs",
+    "test:crate-packaging": "node --test tests/crate-packaging.test.mjs",
+    "test:frontend": "npm run check:js && npm run check:contracts && npm run test:contract && npm run test:mobile-workflow && npm run test:installers && npm run test:release-assets && npm run test:crate-packaging",
+    "test:ui": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@tauri-apps/cli": "^2"
+  },
+  "dependencies": {
+    "@tauri-apps/plugin-process": "^2.3.1",
+    "@tauri-apps/plugin-updater": "^2.10.1"
+  }
+}

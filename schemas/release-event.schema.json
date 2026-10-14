@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/release-event.schema.json",
+  "title": "Gantry Release Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "sequence",
+    "occurred_at",
+    "kind",
+    "actor",
+    "details",
+    "previous_hash",
+    "hash"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "release_id": { "type": "string", "pattern": "^REL-[A-F0-9]{10}$" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "kind": {
+      "enum": [
+        "release_created",
+        "release_scheduled",
+        "candidate_bound",
+        "candidate_audited",
+        "evidence_linked",
+        "finding_resolved",
+        "release_approved",
+        "release_rejected",
+        "finding_waived"
+      ]
+    },
+    "actor": { "type": ["string", "null"], "minLength": 1 },
+    "details": { "type": "object" },
+    "previous_hash": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/mobile-audit-report-2.0.json",
+  "title": "Gantry mobile audit report",
+  "type": "object",
+  "required": [
+    "schema_version", "generated_at", "project_root", "git_commit", "tool_version",
+    "policy_digest", "report_fingerprint", "policy", "decision", "decision_reasons", "summary", "project", "findings"
+  ],
+  "properties": {
+    "schema_version": { "const": "2.0" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "project_root": { "type": "string" },
+    "git_commit": { "type": "string" },
+    "git_branch": { "type": ["string", "null"] },
+    "git_dirty": { "type": ["boolean", "null"] },
+    "tool_version": { "type": "string", "minLength": 1 },
+    "policy_digest": { "$ref": "#/$defs/sha256" },
+    "report_fingerprint": { "$ref": "#/$defs/sha256" },
+    "policy": { "type": "object" },
+    "decision": { "enum": ["go", "at_risk", "no_go"] },
+    "decision_reasons": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "summary": {
+      "type": "object",
+      "required": ["passed", "blockers", "warnings", "manual", "unavailable"],
+      "additionalProperties": false,
+      "properties": {
+        "passed": { "type": "integer", "minimum": 0 },
+        "blockers": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 },
+        "manual": { "type": "integer", "minimum": 0 },
+        "unavailable": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "project": { "type": "object" },
+    "artifact": { "type": ["object", "null"] },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "rule_id", "subject_id", "finding_instance_id", "title", "category", "severity", "status", "locations", "rationale", "remediation"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^MOB-" },
+          "rule_id": { "type": "string", "pattern": "^MOB-" },
+          "subject_id": { "type": "string", "minLength": 1 },
+          "finding_instance_id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "category": { "type": "string", "minLength": 1 },
+          "severity": { "enum": ["blocker", "warning", "advisory"] },
+          "status": { "enum": ["pass", "fail", "warning", "manual", "unavailable"] },
+          "locations": { "type": "array", "items": { "type": "string" } },
+          "rationale": { "type": "string" },
+          "remediation": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

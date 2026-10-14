@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/mobile-audit-cache.schema.json",
+  "title": "Gantry Mobile Audit Derived Cache Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cache_key", "identity", "report"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "cache_key": { "$ref": "#/$defs/sha256" },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version", "report_schema_version", "tool_version", "git_commit",
+        "artifact_sha256", "artifact_size_bytes", "artifact_extension",
+        "policy_digest", "authority_tools_digest"
+      ],
+      "properties": {
+        "schema_version": { "const": "1.0" },
+        "report_schema_version": { "const": "2.0" },
+        "tool_version": { "type": "string", "minLength": 1 },
+        "git_commit": { "type": "string", "minLength": 1 },
+        "artifact_sha256": { "$ref": "#/$defs/sha256" },
+        "artifact_size_bytes": { "type": "integer", "minimum": 0 },
+        "artifact_extension": { "enum": ["ipa", "aab", "apk"] },
+        "policy_digest": { "$ref": "#/$defs/sha256" },
+        "authority_tools_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "report": { "$ref": "mobile-audit-report.schema.json" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

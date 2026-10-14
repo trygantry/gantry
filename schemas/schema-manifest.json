@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "compatibility": "exact_version_fail_closed",
+  "contracts": [
+    { "name": "mobile policy", "path": "mobile-policy.schema.json", "current_version": "1.0", "authority": "configuration" },
+    { "name": "mobile audit report", "path": "mobile-audit-report.schema.json", "current_version": "2.0", "authority": "derived_artifact" },
+    { "name": "mobile audit cache", "path": "mobile-audit-cache.schema.json", "current_version": "1.0", "authority": "derived_artifact" },
+    { "name": "workflow release", "path": "mobile-release.schema.json", "current_version": "1.0", "authority": "governance_record" },
+    { "name": "release candidate", "path": "release-candidate.schema.json", "current_version": "1.0", "authority": "governance_record" },
+    { "name": "release audit", "path": "release-audit.schema.json", "current_version": "1.0", "authority": "governance_record" },
+    { "name": "release event", "path": "release-event.schema.json", "current_version": "1.0", "authority": "governance_record" },
+    { "name": "release evidence link", "path": "release-evidence-link.schema.json", "current_version": "1.0", "authority": "governance_record" },
+    { "name": "finding resolution", "path": "finding-resolution.schema.json", "current_version": "1.0", "authority": "governance_record" },
+    { "name": "human release decision", "path": "human-release-decision.schema.json", "current_version": "1.0", "authority": "governance_record" },
+    { "name": "release finding waiver", "path": "release-finding-waiver.schema.json", "current_version": "1.0", "authority": "governance_record" },
+    { "name": "release packet", "path": "release-packet.schema.json", "current_version": "1.0", "authority": "derived_artifact" },
+    { "name": "release candidate diff", "path": "release-candidate-diff.schema.json", "current_version": "1.0", "authority": "derived_artifact" },
+    { "name": "release portfolio", "path": "release-portfolio.schema.json", "current_version": "1.0", "authority": "derived_artifact" }
+  ]
+}

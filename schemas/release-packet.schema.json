@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/release-packet.schema.json",
+  "title": "Gantry Verified Release Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "packet_id", "packet_digest", "assembled_at", "release",
+    "active_platforms", "candidates", "audits", "reports", "evidence_links",
+    "resolutions", "decisions", "waivers", "events"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "packet_id": { "type": "string", "pattern": "^PKT-[A-F0-9]{10}$" },
+    "packet_digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "assembled_at": { "type": "string", "format": "date-time" },
+    "release": { "type": "object" },
+    "active_platforms": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "platform", "candidate_id", "candidate_sha256", "audit_id",
+          "automated_decision", "report_fingerprint", "policy_digest",
+          "human_decision_id", "human_decision", "context_waiver_ids",
+          "effective_waiver_ids", "expired_waiver_ids", "unresolved_finding_ids"
+        ],
+        "properties": {
+          "platform": { "enum": ["ios", "android"] },
+          "candidate_id": { "type": "string", "pattern": "^CAN-[A-F0-9]{10}$" },
+          "candidate_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "audit_id": { "type": ["string", "null"], "pattern": "^AUD-[A-F0-9]{10}$" },
+          "automated_decision": { "enum": ["go", "at_risk", "no_go", null] },
+          "report_fingerprint": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+          "policy_digest": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+          "human_decision_id": { "type": ["string", "null"], "pattern": "^DEC-[A-F0-9]{10}$" },
+          "human_decision": { "enum": ["approved", "rejected", null] },
+          "context_waiver_ids": { "$ref": "#/$defs/waiver_ids" },
+          "effective_waiver_ids": { "$ref": "#/$defs/waiver_ids" },
+          "expired_waiver_ids": { "$ref": "#/$defs/waiver_ids" },
+          "unresolved_finding_ids": {
+            "type": "array", "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "candidates": { "$ref": "#/$defs/records" },
+    "audits": { "$ref": "#/$defs/records" },
+    "reports": { "$ref": "#/$defs/records" },
+    "evidence_links": { "$ref": "#/$defs/records" },
+    "resolutions": { "$ref": "#/$defs/records" },
+    "decisions": { "$ref": "#/$defs/records" },
+    "waivers": { "$ref": "#/$defs/records" },
+    "events": { "$ref": "#/$defs/records" }
+  },
+  "$defs": {
+    "records": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "waiver_ids": {
+      "type": "array", "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^WAV-[A-F0-9]{10}$" }
+    }
+  }
+}

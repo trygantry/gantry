@@ -1,0 +1,55 @@
+name: Bug report
+description: Report something that isn't working as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to file a bug report.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, including what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this?
+      placeholder: |
+        1. Run `gantry ...`
+        2. Open the ... view
+        3. See error
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where did this occur?
+      options:
+        - Desktop app
+        - CLI
+        - GitHub Action
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Gantry version
+      placeholder: "0.1.0 or commit SHA"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "macOS 14.5 / Ubuntu 24.04 / Windows 11"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / output
+      render: shell

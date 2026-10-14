@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/mobile-policy-1.0.json",
+  "title": "Gantry mobile release policy",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "policy_pack_version": { "type": "string", "minLength": 1 },
+    "reviewed_at": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "minimum_android_target_sdk": { "type": "integer", "minimum": 21, "maximum": 100 },
+    "minimum_wear_target_sdk": { "type": "integer", "minimum": 21, "maximum": 100 },
+    "fail_on_warnings": { "type": "boolean" },
+    "fail_on_manual": { "type": "boolean" },
+    "fail_on_unavailable": { "type": "boolean" },
+    "approved_signing_identities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 512 }
+    },
+    "trusted_evidence_issuers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+    },
+    "production_placeholder_patterns": {
+      "type": "array",
+      "maxItems": 128,
+      "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+    },
+    "required_manual_evidence": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "required_public_urls": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

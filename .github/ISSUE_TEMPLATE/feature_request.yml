@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest an idea for Gantry
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gantry stays focused on **launch readiness**, not general note-taking. Please
+        frame requests around helping teams answer "Are we ready to launch?"
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the launch-readiness pain you're hitting.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Which interface?
+      options:
+        - Desktop app
+        - CLI
+        - File contract / schemas
+        - GitHub Action / CI
+        - Integrations
+    validations:
+      required: true

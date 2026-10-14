@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/human-release-decision.schema.json",
+  "title": "Gantry Human Release Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "id", "release_id", "candidate_id", "candidate_sha256", "audit_id", "platform",
+    "report_fingerprint", "policy_digest", "decision", "decided_by", "role",
+    "rationale", "created_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "id": { "type": "string", "pattern": "^DEC-[A-F0-9]{10}$" },
+    "release_id": { "type": "string", "pattern": "^REL-[A-F0-9]{10}$" },
+    "candidate_id": { "type": "string", "pattern": "^CAN-[A-F0-9]{10}$" },
+    "candidate_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "audit_id": { "type": "string", "pattern": "^AUD-[A-F0-9]{10}$" },
+    "platform": { "enum": ["ios", "android"] },
+    "report_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "policy_digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "decision": { "enum": ["approved", "rejected"] },
+    "decided_by": { "type": "string", "minLength": 1 },
+    "role": { "type": "string", "minLength": 1 },
+    "rationale": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,245 @@
+/* ==========================================================================
+   Gantry GitHub Repository Card Styling
+   Includes glassmorphism, glowing borders, custom grids, and interactive transitions.
+   ========================================================================== */
+
+/* Variables scoped to the card component */
+.repo-card {
+  --rc-bg: rgba(11, 15, 25, 0.75);
+  --rc-border-glow: linear-gradient(135deg, #00f2fe, #3b82f6, #9d4edd);
+  --rc-glow-color: rgba(0, 242, 254, 0.15);
+  
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  background: var(--rc-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  color: var(--text-primary, #f8fafc);
+  overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+
+/* Glassmorphic glowing background grid overlay */
+.repo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1.5px; /* Border thickness */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+/* Outer border color gradient transition on hover */
+.repo-card:hover::before {
+  background: var(--rc-border-glow);
+}
+
+/* Subtle background accent glow */
+.repo-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--rc-glow-color) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.repo-card:hover::after {
+  opacity: 0.8;
+}
+
+/* Card hover animation state */
+.repo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 242, 254, 0.12), 0 1px 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+/* Card layout grid */
+.repo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.repo-card-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Logo icon representing Gantry launch control (transparent backdrop, bright cyan stroke matching the authentic sidebar logo) */
+.repo-card-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.repo-card:hover .repo-card-icon {
+  transform: rotate(15deg) scale(1.1);
+}
+
+.repo-card-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: #00f2fe;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 4px rgba(0, 242, 254, 0.4));
+}
+
+/* Repository title styling */
+.repo-card-title {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tagline/Description style */
+.repo-card-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary, #94a3b8);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+
+.repo-card:hover .repo-card-description {
+  color: var(--text-primary, #f8fafc);
+}
+
+/* Badges section */
+.repo-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.repo-card-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  transition: all 0.3s ease;
+}
+
+.repo-card-badge.badge-highlight {
+  background: rgba(0, 242, 254, 0.08);
+  border-color: rgba(0, 242, 254, 0.4);
+  color: #00f2fe;
+}
+
+.repo-card:hover .repo-card-badge:not(.badge-highlight) {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(30, 41, 59, 0.9);
+}
+
+/* Footer Section */
+.repo-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.repo-card-stats {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.repo-card-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary, #94a3b8);
+}
+
+.repo-card-stat svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.repo-card-stat .stat-count {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* Live HUD Status badge */
+.repo-card-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.repo-card-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-go, #10b981);
+  box-shadow: 0 0 10px var(--color-go, #10b981);
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+.repo-card-status-val {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-weight: 700;
+  color: var(--color-go, #10b981);
+}
+
+/* Pulsing micro-animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+    box-shadow: 0 0 4px var(--color-go, #10b981);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 12px var(--color-go, #10b981);
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "vaultName": "Gantry iOS Contract Fixture",
+  "version": "1.0.0",
+  "releaseDate": "2026-07-16",
+  "defaultEnvironment": "production",
+  "environments": {
+    "production": {
+      "requiredQaCompletion": 100,
+      "blockOnP0": true,
+      "minCrashFreeRate": null,
+      "requireSignoffs": false,
+      "maxObservedAgeHours": 24,
+      "blockOnMissingTelemetry": false
+    }
+  }
+}

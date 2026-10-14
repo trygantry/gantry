@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/finding-resolution.schema.json",
+  "title": "Gantry Finding Resolution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "release_id",
+    "candidate_id",
+    "source_audit_id",
+    "platform",
+    "finding_instance_id",
+    "status",
+    "reason",
+    "evidence_ids",
+    "actor",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "id": { "type": "string", "pattern": "^RES-[A-F0-9]{10}$" },
+    "release_id": { "type": "string", "pattern": "^REL-[A-F0-9]{10}$" },
+    "candidate_id": { "type": "string", "pattern": "^CAN-[A-F0-9]{10}$" },
+    "source_audit_id": { "type": "string", "pattern": "^AUD-[A-F0-9]{10}$" },
+    "platform": { "enum": ["ios", "android"] },
+    "finding_instance_id": { "type": "string", "minLength": 1 },
+    "status": { "const": "resolved" },
+    "reason": { "type": "string", "minLength": 1 },
+    "evidence_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^EVI-[A-F0-9]{10}$" }
+    },
+    "actor": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

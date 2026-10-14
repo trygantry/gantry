@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trygantry.dev/schemas/release-portfolio.schema.json",
+  "title": "Gantry verified release portfolio",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "counts", "releases", "review_queue"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "counts": { "$ref": "#/$defs/portfolio_counts" },
+    "releases": { "type": "array", "items": { "$ref": "#/$defs/release" } },
+    "review_queue": { "type": "array", "items": { "$ref": "#/$defs/review_item" } }
+  },
+  "$defs": {
+    "nullable_string": { "type": ["string", "null"] },
+    "platform": { "enum": ["ios", "android"] },
+    "review_kind": {
+      "enum": ["overdue", "due_soon", "missing_owner", "missing_candidate", "missing_audit", "blocked", "approval_required", "rejected", "approved_with_risk", "accepted_risk", "expiring_evidence", "expiring_waiver"]
+    },
+    "audit_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["passed", "blockers", "warnings", "manual", "unavailable"],
+      "properties": {
+        "passed": { "type": "integer", "minimum": 0 },
+        "blockers": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 },
+        "manual": { "type": "integer", "minimum": 0 },
+        "unavailable": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "portfolio_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "needs_attention", "awaiting_approval", "blocked_or_rejected", "approved_with_risk", "accepted_risk", "expiring_evidence", "expiring_waivers"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "needs_attention": { "type": "integer", "minimum": 0 },
+        "overdue": { "type": "integer", "minimum": 0 },
+        "due_soon": { "type": "integer", "minimum": 0 },
+        "awaiting_approval": { "type": "integer", "minimum": 0 },
+        "blocked_or_rejected": { "type": "integer", "minimum": 0 },
+        "approved_with_risk": { "type": "integer", "minimum": 0 },
+        "accepted_risk": { "type": "integer", "minimum": 0 },
+        "expiring_evidence": { "type": "integer", "minimum": 0 },
+        "expiring_waivers": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "name", "owner", "stage", "updated_at", "age_days", "platforms", "automated_decision", "counts", "active_decisions", "active_waivers", "expiring_evidence", "expiring_waivers", "needs_attention", "next_action", "review_kinds"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^REL-[A-Z0-9]+$" },
+        "version": { "type": "string", "minLength": 1 },
+        "name": { "$ref": "#/$defs/nullable_string" },
+        "owner": { "$ref": "#/$defs/nullable_string" },
+        "target_date": { "type": ["string", "null"], "format": "date" },
+        "submission_date": { "type": ["string", "null"], "format": "date" },
+        "rollout_date": { "type": ["string", "null"], "format": "date" },
+        "days_to_target": { "type": ["integer", "null"] },
+        "stage": { "enum": ["draft", "candidate", "in_review", "approved", "rejected", "submitted", "rolling_out", "released", "halted", "superseded"] },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "age_days": { "type": "integer", "minimum": 0 },
+        "platforms": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/platform" } },
+        "automated_decision": { "type": ["string", "null"], "enum": ["go", "at_risk", "no_go", null] },
+        "counts": { "$ref": "#/$defs/audit_counts" },
+        "active_decisions": { "type": "integer", "minimum": 0 },
+        "active_waivers": { "type": "integer", "minimum": 0 },
+        "expiring_evidence": { "type": "integer", "minimum": 0 },
+        "expiring_waivers": { "type": "integer", "minimum": 0 },
+        "needs_attention": { "type": "boolean" },
+        "next_action": { "type": "string", "minLength": 1 },
+        "review_kinds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/review_kind" } }
+      }
+    },
+    "review_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "release_id", "release_version", "release_name", "owner", "platform", "severity", "title", "reason", "next_action", "due_at"],
+      "properties": {
+        "kind": { "$ref": "#/$defs/review_kind" },
+        "release_id": { "type": "string", "pattern": "^REL-[A-Z0-9]+$" },
+        "release_version": { "type": "string", "minLength": 1 },
+        "release_name": { "$ref": "#/$defs/nullable_string" },
+        "owner": { "$ref": "#/$defs/nullable_string" },
+        "platform": { "anyOf": [{ "$ref": "#/$defs/platform" }, { "type": "null" }] },
+        "severity": { "enum": ["blocker", "warning", "review", "risk"] },
+        "title": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "next_action": { "type": "string", "minLength": 1 },
+        "due_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}
