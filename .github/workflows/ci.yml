@@ -62,10 +62,12 @@ jobs:
           set -euo pipefail
           if [ "$EVENT_NAME" = "pull_request" ]; then
             git diff --check "$PR_BASE_SHA" "$PR_HEAD_SHA"
-          elif [ "$PUSH_BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+          elif [ "$PUSH_BEFORE_SHA" != "0000000000000000000000000000000000000000" ] && git cat-file -e "$PUSH_BEFORE_SHA^{commit}" 2>/dev/null; then
             git diff --check "$PUSH_BEFORE_SHA" "$GITHUB_SHA"
-          else
+          elif git rev-parse -q --verify "$GITHUB_SHA^" >/dev/null; then
             git diff --check "$GITHUB_SHA^" "$GITHUB_SHA"
+          else
+            echo "No base commit available; skipping diff whitespace check."
           fi
       - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c # stable
         with:
