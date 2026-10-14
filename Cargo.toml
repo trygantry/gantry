@@ -34,7 +34,7 @@ clap_complete = "4.6.5"
 dialoguer = { version = "0.12.0", default-features = false }
 semver = "1.0.25"
 plist = "1.10.0"
-zip = { version = "4.6.1", default-features = false, features = ["deflate"] }
+zip = { version = "9.0.1", default-features = false, features = ["deflate"] }
 
 [workspace.lints.clippy]
 # Rust 1.88 introduced this style lint across a large legacy formatting surface.
